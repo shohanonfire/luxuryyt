@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUXURY YT</title>
     <style>
+        /* Same styles as before */
         * {
             margin: 0;
             padding: 0;
@@ -89,6 +90,52 @@
             width: 30px;
             height: 30px;
         }
+
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            color: black;
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #ff3333;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
     </style>
 </head>
 <body>
@@ -129,7 +176,7 @@
             </tbody>
         </table>
         <div class="buy-now">
-            <button onclick="buyNow()">BUY NOW</button>
+            <button onclick="openPopup()">BUY NOW</button>
         </div>
     </section>
 
@@ -161,9 +208,55 @@
         </div>
     </footer>
 
+    <!-- Popup HTML -->
+    <div class="overlay"></div>
+    <div class="popup" id="popup">
+        <h3>Enter YouTube Handle and Activation Code</h3>
+        <input type="text" id="youtubeHandle" placeholder="Enter YouTube Handle">
+        <input type="text" id="activationCode" placeholder="Enter Activation Code">
+        <button onclick="activate()">Activate</button>
+    </div>
+
     <script>
+        function openPopup() {
+            document.querySelector('.overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function sendTelegramMessage(message) {
+            const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+            const chatId = 'YOUR_CHAT_ID';
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+            
+            fetch(url);
+        }
+
+        function activate() {
+            const youtubeHandle = document.getElementById('youtubeHandle').value;
+            const activationCode = document.getElementById('activationCode').value;
+
+            if (activationCode === 'LYT089') {
+                // Send activation message to Telegram
+                sendTelegramMessage(`YouTube Handle: ${youtubeHandle} has activated their subscription.`);
+
+                // Redirect to payment link
+                window.location.href = 'https://pay-bkash.vercel.app';
+            } else {
+                alert('Invalid activation code!');
+            }
+        }
+
+        // Send a message to Telegram when the "BUY NOW" button is clicked
         function buyNow() {
-            window.location.href = 'https://subscription-exe.vercel.app';
+            const message = "Someone clicked on 'Buy Now'.";
+            sendTelegramMessage(message);
+
+            openPopup();
         }
     </script>
 </body>
