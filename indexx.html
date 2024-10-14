@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXURY MEMBERSHIP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3c0068;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 10px 0;
+        }
+
+        #clock {
+            margin-top: 50px;
+            width: 300px;
+            height: 300px;
+            border: 10px solid white;
+            border-radius: 50%;
+            position: relative;
+            background-color: #3c0068;
+            background-image: url('https://imgur.com/vNgYpqJ.png'); /* Adding the logo as the background */
+            background-size: 101%; /* Adjust size to fit well */
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .hand {
+            width: 50%;
+            height: 4px;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform-origin: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .hour {
+            width: 50%;
+            height: 6px;
+        }
+
+        .minute {
+            width: 50%;
+            height: 4px;
+        }
+
+        .second {
+            width: 50%;
+            background-color: #ff4d4d;
+            height: 2px;
+        }
+
+        .center-point {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: calc(50% - 10px);
+            left: calc(50% - 10px);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .centered {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #close-text {
+            margin-top: 20px;
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            color: #fffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>LUXURY MEMBERSHIP</h1>
+
+    <div class="centered">
+        <div id="clock">
+            <div class="hand hour" id="hour"></div>
+            <div class="hand minute" id="minute"></div>
+            <div class="hand second" id="second"></div>
+            <div class="center-point"></div>
+        </div>
+        <div id="close-text">Close until 10 AM</div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            // Calculate the time to be shown on the clock
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Update clock hands
+            const hourElement = document.getElementById('hour');
+            const minuteElement = document.getElementById('minute');
+            const secondElement = document.getElementById('second');
+
+            const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
+            const minuteDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+            const secondDeg = (seconds / 60) * 360;
+
+            hourElement.style.transform = `rotate(${hourDeg - 90}deg)`; // Adjust to match clock position
+            minuteElement.style.transform = `rotate(${minuteDeg - 90}deg)`;
+            secondElement.style.transform = `rotate(${secondDeg - 90}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Initial call to set the clock immediately
+    </script>
+</body>
+</html>
