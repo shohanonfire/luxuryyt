@@ -15,7 +15,7 @@
 
         .container {
             text-align: center;
-            color: #E0E0E0; /* Light gray */
+            color: #D3D3D3; /* Light gray */
             padding: 20px;
         }
 
@@ -44,22 +44,32 @@
             margin-top: 30px;
         }
 
+        .input-group p {
+            margin-bottom: 10px;
+        }
+
+        .input-boxes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Keep all input boxes in a single line */
+            gap: 5px; /* Space between boxes */
+        }
+
         .input-group input {
-            width: 50px;
+            flex: 1; /* Allow input boxes to grow equally */
+            min-width: 30px; /* Minimum width */
             height: 50px;
             font-size: 1.5rem;
             text-align: center;
-            margin: 5px;
-            border: 2px solid #E0E0E0;
+            border: 2px solid #D3D3D3;
             background-color: transparent;
-            color: #E0E0E0;
-            display: inline-block;
+            color: #D3D3D3;
         }
 
         .terms {
             margin-top: 20px;
             font-size: 1rem;
-            color: #E0E0E0;
+            color: #D3D3D3;
         }
 
         .buttons {
@@ -107,64 +117,34 @@
 
     <div class="input-group">
         <p>Your Nagad Account Number</p>
-        <input type="text" maxlength="1" id="digit1">
-        <input type="text" maxlength="1" id="digit2">
-        <input type="text" maxlength="1" id="digit3">
-        <input type="text" maxlength="1" id="digit4">
-        <input type="text" maxlength="1" id="digit5">
-        <input type="text" maxlength="1" id="digit6">
-        <input type="text" maxlength="1" id="digit7">
-        <input type="text" maxlength="1" id="digit8">
-        <input type="text" maxlength="1" id="digit9">
-        <input type="text" maxlength="1" id="digit10">
-        <input type="text" maxlength="1" id="digit11">
+        <div class="input-boxes">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+        </div>
     </div>
 
-    <!-- Terms Text -->
     <div class="terms">
-        <p>By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions</p>
+        By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions
     </div>
 
     <div class="buttons">
-        <button id="proceed-btn">Proceed</button>
-        <button class="cancel" id="close-btn">Close</button>
+        <button>Proceed</button>
+        <button class="cancel">Close</button>
     </div>
 
     <div class="footer">
         <img src="nagad-logo.png" alt="Nagad Logo">
     </div>
 </div>
-
-<script>
-    // Proceed button functionality
-    document.getElementById('proceed-btn').addEventListener('click', function() {
-        let filled = true;
-
-        // Check if all input fields are filled
-        for (let i = 1; i <= 11; i++) {
-            const input = document.getElementById('digit' + i);
-            if (input.value === '') {
-                filled = false;
-                input.style.borderColor = 'red'; // Highlight empty fields
-            } else {
-                input.style.borderColor = '#E0E0E0';
-            }
-        }
-
-        if (filled) {
-            alert("Proceeding with the form...");
-            // You can replace this with actual form submission logic
-        } else {
-            alert("Please fill all the fields.");
-        }
-    });
-
-    // Close button functionality
-    document.getElementById('close-btn').addEventListener('click', function() {
-        alert("Form closed.");
-        // You can replace this with actual close logic
-    });
-</script>
 
 </body>
 </html>
