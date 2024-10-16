@@ -53,6 +53,7 @@
             border: 2px solid #E0E0E0;
             background-color: transparent;
             color: #E0E0E0;
+            display: inline-block;
         }
 
         .terms {
@@ -94,7 +95,7 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://imgur.com/xCGvdyx.png" alt="Cart Icon">
+        <img src="shopping-cart-icon.png" alt="Cart Icon">
         <h2>LUXURY MEMBERSHIP</h2>
     </div>
 
@@ -115,6 +116,8 @@
         <input type="text" maxlength="1" id="digit7">
         <input type="text" maxlength="1" id="digit8">
         <input type="text" maxlength="1" id="digit9">
+        <input type="text" maxlength="1" id="digit10">
+        <input type="text" maxlength="1" id="digit11">
     </div>
 
     <!-- Terms Text -->
@@ -128,7 +131,7 @@
     </div>
 
     <div class="footer">
-        <img src="" alt="Nagad Logo">
+        <img src="nagad-logo.png" alt="Nagad Logo">
     </div>
 </div>
 
@@ -138,7 +141,7 @@
         let filled = true;
 
         // Check if all input fields are filled
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 1; i <= 11; i++) {
             const input = document.getElementById('digit' + i);
             if (input.value === '') {
                 filled = false;
