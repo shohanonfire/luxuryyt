@@ -9,13 +9,13 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: url('https://imgur.com/i28fbUx.png') no-repeat center center fixed;
+            background: url('https://imgur.com/pAA3wi6.png') no-repeat center center fixed;
             background-size: cover;
         }
 
         .container {
             text-align: center;
-            color: #E0E0E0; /* Lighter gray color */
+            color: #E0E0E0; /* Light gray */
             padding: 20px;
         }
 
@@ -32,7 +32,7 @@
         .info {
             margin-top: 30px;
             font-size: 1.2rem;
-            text-align: left; /* Align the text to the left */
+            text-align: left;
             padding-left: 20px;
         }
 
@@ -50,9 +50,15 @@
             font-size: 1.5rem;
             text-align: center;
             margin: 5px;
-            border: 2px solid #E0E0E0; /* Lighter gray for input borders */
+            border: 2px solid #E0E0E0;
             background-color: transparent;
-            color: #E0E0E0; /* Lighter gray for input text */
+            color: #E0E0E0;
+        }
+
+        .terms {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #E0E0E0;
         }
 
         .buttons {
@@ -63,7 +69,7 @@
             padding: 10px 20px;
             margin: 10px;
             font-size: 1.2rem;
-            color: white; /* Button text stays white */
+            color: white;
             background-color: #ff5e57;
             border: none;
             border-radius: 5px;
@@ -76,16 +82,11 @@
 
         .footer {
             margin-top: 50px;
-            font-size: 1rem;
         }
 
         .footer img {
             width: 100px;
             margin-top: 20px;
-        }
-
-        .footer p {
-            color: #E0E0E0; /* Lighter gray for footer text */
         }
     </style>
 </head>
@@ -93,7 +94,7 @@
 
 <div class="container">
     <div class="header">
-        <img src="https://imgur.com/xCGvdyx.png" alt="Cart Icon">
+        <img src="shopping-cart-icon.png" alt="Cart Icon">
         <h2>LUXURY MEMBERSHIP</h2>
     </div>
 
@@ -116,14 +117,18 @@
         <input type="text" maxlength="1" id="digit9">
     </div>
 
+    <!-- Terms Text -->
+    <div class="terms">
+        <p>By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions</p>
+    </div>
+
     <div class="buttons">
         <button id="proceed-btn">Proceed</button>
         <button class="cancel" id="close-btn">Close</button>
     </div>
 
     <div class="footer">
-        <p>By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions</p>
-        <img src="https://imgur.com/GnEfmZF.png" alt="Nagad Logo">
+        <img src="nagad-logo.png" alt="Nagad Logo">
     </div>
 </div>
 
