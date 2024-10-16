@@ -63,7 +63,7 @@
             text-align: center;
             border: 2px solid #D3D3D3;
             background-color: white; /* White background */
-            color: #D3D3D3;
+            color: black; /* Black text */
             border-radius: 5px; /* Rounded corners */
             padding: 0; /* Remove padding for uniformity */
         }
@@ -120,17 +120,17 @@
     <div class="input-group">
         <p>Your Nagad Account Number</p>
         <div class="input-boxes">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
-            <input type="text" maxlength="1">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
+            <input type="text" maxlength="1" oninput="moveToNext(this)">
         </div>
     </div>
 
@@ -147,6 +147,39 @@
         <img src="nagad-logo.png" alt="Nagad Logo">
     </div>
 </div>
+
+<script>
+    function moveToNext(input) {
+        // Ensure the input is numeric
+        if (input.value !== '' && isNaN(input.value)) {
+            input.value = ''; // Clear the input if it's not a number
+            return;
+        }
+
+        // Move to the next input box if the current one is filled
+        if (input.value.length >= input.maxLength) {
+            let nextInput = input.nextElementSibling;
+            if (nextInput) {
+                nextInput.focus(); // Move focus to the next input
+            }
+        }
+    }
+
+    // Prevent non-numeric input
+    const inputs = document.querySelectorAll('.input-group input');
+    inputs.forEach(input => {
+        input.addEventListener('keydown', (event) => {
+            // Allow: backspace, delete, tab, escape, enter
+            if (event.key === "Backspace" || event.key === "Delete" || event.key === "Tab" || event.key === "Escape" || event.key === "Enter") {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress if not
+            if ((event.shiftKey || (event.key < '0' || event.key > '9'))) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
