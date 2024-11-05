@@ -212,6 +212,19 @@
 .Btn:active {
   transform: translate(2px, 2px);
 }
+
+        /* Initial state */
+.content {
+    opacity: 0;
+    transform: translateY(-20px); /* Start content slightly above */
+    transition: opacity 1s ease, transform 1s ease; /* Smooth transition */
+}
+
+/* Final state: Fade-in and slide down */
+.content.show {
+    opacity: 1;
+    transform: translateY(0); /* Slide down to its normal position */
+}
     </style>
 </head>
 <body>
@@ -380,6 +393,17 @@
 
             openPopup();
         }
+
+        // Wait for the document to load
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all elements with the 'content' class
+        const contents = document.querySelectorAll(".content");
+
+        // Add the 'show' class to each element, triggering the animation
+        contents.forEach((content) => {
+            content.classList.add("show");
+        });
+    });
     </script>
 </body>
 </html>
