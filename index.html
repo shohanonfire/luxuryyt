@@ -228,7 +228,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
+    <header class="header content">
         <div class="logo">
             <img src="Mlogo.png" alt="YoutSubscriber Logo">
         </div>
@@ -236,12 +236,12 @@
         <p> PURCHASE PREMIUM MEMBERSHIP FOR YOUTUBE FROM US IN BD</p>
     </header>
 
-    <section class="offer">
+    <section class="offer content">
         <p>HELLO EVERYONE, with our new rigs buy YouTube subscriber membership tension free from us in Bangladesh. We are here to give you YouTube subscribers membership in reasonable price. So why are you waiting? Buy subscriber membership and grow your YouTube channel.</p>
         <h2>BOOK YOUR FAVOURITE MEMBERSHIP NOW</h2>
     </section>
 
-    <section class="pricing">
+    <section class="pricing content">
         <table>
             <thead>
                 <tr>
@@ -269,7 +269,7 @@
         </div>
     </section>
 
-    <footer class="footer">
+    <footer class="footer content">
         <p></p>
         <div class="payment">
             <img src="https://imgur.com/HoTrMsT.png" alt="bKash Logo">
@@ -394,16 +394,13 @@
             openPopup();
         }
 
-        // Wait for the document to load
-    document.addEventListener("DOMContentLoaded", function () {
-        // Select all elements with the 'content' class
-        const contents = document.querySelectorAll(".content");
-
-        // Add the 'show' class to each element, triggering the animation
-        contents.forEach((content) => {
-            content.classList.add("show");
+       // Trigger the fade-in and slide-down animation on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            const contents = document.querySelectorAll(".content");
+            contents.forEach((content) => {
+                content.classList.add("show");
+            });
         });
-    });
     </script>
 </body>
 </html>
