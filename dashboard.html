@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>User Dashboard</title>
+</head>
+<body>
+   <h2>Welcome to Your Dashboard</h2>
+
+   <p>Your Current Balance: $<span id="userBalance">0</span></p>
+
+   <h3>Add Balance</h3>
+   <form id="addBalanceForm">
+      <input type="number" id="amount" placeholder="Amount to Add" required>
+      <button type="button" onclick="addBalance()">Add Balance</button>
+   </form>
+
+   <h3>Logout</h3>
+   <button id="logoutButton">Logout</button>
+
+   <!-- Firebase SDKs -->
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+   <script>
+      // Your Firebase config (filled with your actual config values)
+      const firebaseConfig = {
+         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+         authDomain: "sphere-tournament.firebaseapp.com",
+         projectId: "sphere-tournament",
+         storageBucket: "sphere-tournament.appspot.com",
+         messagingSenderId: "49933225091",
+         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+         measurementId: "G-EPKCPTL47V"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Get current user UID
+      let user = auth.currentUser;
+      if (!user) {
+         // Redirect to login page if not logged in
+         window.location.href = "login.html";
+      }
+
+      // Display current balance for the logged-in user
+      function getUserBalance() {
+         db.collection("users").doc(user.uid).get()
+            .then((doc) => {
+               if (doc.exists) {
+                  const balance = doc.data().balance || 0;
+                  document.getElementById("userBalance").innerText = balance;
+               } else {
+                  console.log("No such user found.");
+               }
+            })
+            .catch((error) => {
+               console.error("Error getting document:", error);
+            });
+      }
+
+      // Add balance to user's account
+      function addBalance() {
+         const amountToAdd = parseFloat(document.getElementById("amount").value);
+         if (isNaN(amountToAdd) || amountToAdd <= 0) {
+            alert("Please enter a valid amount.");
+            return;
+         }
+
+         // Get the current user's balance and update it
+         db.collection("users").doc(user.uid).get()
+            .then((doc) => {
+               if (doc.exists) {
+                  const currentBalance = doc.data().balance || 0;
+                  const newBalance = currentBalance + amountToAdd;
+
+                  // Update the user's balance
+                  db.collection("users").doc(user.uid).update({
+                     balance: newBalance
+                  })
+                  .then(() => {
+                     alert("Balance updated successfully!");
+                     getUserBalance(); // Refresh the displayed balance
+                  })
+                  .catch((error) => {
+                     console.error("Error updating balance:", error);
+                  });
+               } else {
+                  console.log("User document not found.");
+               }
+            })
+            .catch((error) => {
+               console.error("Error fetching user document:", error);
+            });
+      }
+
+      // Logout functionality
+      document.getElementById("logoutButton").onclick = function () {
+         auth.signOut()
+            .then(() => {
+               window.location.href = "login.html"; // Redirect to login page
+            })
+            .catch((error) => {
+               console.error("Error signing out:", error);
+            });
+      };
+
+      // Get user balance on page load
+      getUserBalance();
+   </script>
+</body>
+</html>
 
