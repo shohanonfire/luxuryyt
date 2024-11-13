@@ -48,6 +48,9 @@
       function sendOTP() {
          const phoneNumber = document.getElementById("phoneNumber").value;
 
+         // Ensure the phoneNumberSection is empty before initializing reCAPTCHA
+         document.getElementById('phoneNumberSection').innerHTML = ''; 
+
          const appVerifier = new firebase.auth.RecaptchaVerifier('phoneNumberSection', {
             size: 'invisible', // Set to 'invisible' to not show the reCAPTCHA challenge
          });
