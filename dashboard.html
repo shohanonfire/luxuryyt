@@ -25,7 +25,7 @@
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
    <script>
-      // Your Firebase config (filled with your actual config values)
+      // Your Firebase config (replace with your actual config)
       const firebaseConfig = {
          apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
          authDomain: "sphere-tournament.firebaseapp.com",
@@ -41,15 +41,21 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // Get current user UID
-      let user = auth.currentUser;
-      if (!user) {
-         // Redirect to login page if not logged in
-         window.location.href = "login.html";
-      }
+      // Monitor the auth state
+      auth.onAuthStateChanged((user) => {
+         if (user) {
+            // If user is logged in, proceed to show their dashboard
+            console.log('User logged in:', user.uid);
+            getUserBalance(user);
+         } else {
+            // Redirect to login page if the user is not logged in
+            console.log('User not logged in. Redirecting...');
+            window.location.href = "login.html"; // Redirect to login page
+         }
+      });
 
       // Display current balance for the logged-in user
-      function getUserBalance() {
+      function getUserBalance(user) {
          db.collection("users").doc(user.uid).get()
             .then((doc) => {
                if (doc.exists) {
@@ -73,6 +79,7 @@
          }
 
          // Get the current user's balance and update it
+         const user = auth.currentUser;
          db.collection("users").doc(user.uid).get()
             .then((doc) => {
                if (doc.exists) {
@@ -85,7 +92,7 @@
                   })
                   .then(() => {
                      alert("Balance updated successfully!");
-                     getUserBalance(); // Refresh the displayed balance
+                     getUserBalance(user); // Refresh the displayed balance
                   })
                   .catch((error) => {
                      console.error("Error updating balance:", error);
@@ -109,10 +116,6 @@
                console.error("Error signing out:", error);
             });
       };
-
-      // Get user balance on page load
-      getUserBalance();
    </script>
 </body>
 </html>
-
