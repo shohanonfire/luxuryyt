@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Signup, Login & Forgot Password</title>
+</head>
+<body>
+   <h2>Sign Up</h2>
+   <form id="signupForm">
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <button type="button" onclick="signup()">Sign Up</button>
+   </form>
+
+   <h2>Login</h2>
+   <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="button" onclick="login()">Login</button>
+   </form>
+
+   <h2>Forgot Password</h2>
+   <form id="forgotPasswordForm">
+      <input type="email" id="resetEmail" placeholder="Enter your email" required>
+      <button type="button" onclick="forgotPassword()">Reset Password</button>
+   </form>
+
+   <!-- Firebase SDKs -->
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+
+   <script>
+      // Your Firebase config (replace with your actual config)
+      const firebaseConfig = {
+         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+         authDomain: "sphere-tournament.firebaseapp.com",
+         projectId: "sphere-tournament",
+         storageBucket: "sphere-tournament.firebasestorage.app",
+         messagingSenderId: "49933225091",
+         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+         measurementId: "G-EPKCPTL47V"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // Sign Up Function
+      function signup() {
+         const email = document.getElementById("signupEmail").value;
+         const password = document.getElementById("signupPassword").value;
+
+         auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+               alert("Signup successful!");
+            })
+            .catch((error) => {
+               alert("Error: " + error.message);
+            });
+      }
+
+      // Login Function
+      function login() {
+         const email = document.getElementById("loginEmail").value;
+         const password = document.getElementById("loginPassword").value;
+
+         auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+               alert("Login successful!");
+               window.location.href = "dashboard.html"; // Add a dashboard page or redirect to another page
+            })
+            .catch((error) => {
+               alert("Error: " + error.message);
+            });
+      }
+
+      // Forgot Password Function
+      function forgotPassword() {
+         const email = document.getElementById("resetEmail").value;
+
+         auth.sendPasswordResetEmail(email)
+            .then(() => {
+               alert("Password reset email sent! Please check your inbox.");
+            })
+            .catch((error) => {
+               alert("Error: " + error.message);
+            });
+      }
+   </script>
+</body>
+</html>
