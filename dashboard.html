@@ -5,275 +5,116 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Dashboard</title>
    <style>
-      /* Reset and Base Styles */
-      * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-         font-family: Arial, sans-serif;
-      }
+      /* Existing CSS styles here */
 
-      body {
-         display: flex;
-         flex-direction: column;
-         min-height: 100vh;
-         background: #1c1e29;
-         color: #ffffff;
-      }
-
-      /* Logo Container */
-      .logo-container {
-         text-align: center;
+      /* New styles for screenshot upload and verification */
+      .upload-container {
          margin-top: 20px;
       }
-
-      .logo {
-         width: 150px;
-         height: 150px;
-         object-fit: contain;
-      }
-
-      /* Navigation Bar Styles */
-      .navbar {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         background-color: #292d3e;
-         padding: 15px 30px;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         margin-top: 10px;
-      }
-
-      .navbar .menu {
-         display: flex;
-         gap: 20px;
-         justify-content: space-between;
-         width: 100%; /* Take full width */
-      }
-
-      .navbar .menu a {
-         color: #ffffff;
-         text-decoration: none;
-         font-size: 1rem;
-         padding: 10px 15px;
-         border-radius: 5px;
-         font-weight: bold;
-         background-color: #000;
-         transition: background 0.3s;
-         width: 100%;  /* Make navigation links equally sized */
-         text-align: center;
-      }
-
-      .navbar .menu a:hover {
-         background-color: #1a75ff;
-      }
-
-      /* Dashboard Container */
-      .dashboard-container {
-         background: #292d3e;
-         border-radius: 8px;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         width: 100%;
-         max-width: 400px;
-         padding: 20px;
-         margin: 20px auto;
-         text-align: center;
-      }
-
-      .dashboard-container h2 {
-         color: #00aaff;
-         margin-bottom: 20px;
-         font-weight: 600;
-      }
-
-      .balance-display {
-         font-size: 1.5rem;
-         font-weight: bold;
-         margin: 20px 0;
-         padding: 10px;
-         background: #1a75ff;
-         border-radius: 5px;
-         color: #fff;
-      }
-
-      #purchaseButton, #logoutButton {
-         margin-top: 20px;
-         padding: 10px 20px;
-         background: #ff4747;
-         color: #fff;
-         font-weight: bold;
+      .verify-button {
+         background-color: #007bff;
+         color: white;
          border: none;
-         border-radius: 4px;
+         padding: 10px;
+         border-radius: 5px;
          cursor: pointer;
          transition: background 0.3s;
+         display: inline-block;
+         margin-top: 10px;
       }
-
-      #purchaseButton {
-         background: #28a745;
-      }
-
-      #purchaseButton:hover {
-         background: #218838;
-      }
-
-      #logoutButton:hover {
-         background: #d43c3c;
-      }
-
-      /* Mobile and Tablet responsive styles */
-      @media (max-width: 768px) {
-         .navbar {
-            padding: 10px 20px;
-         }
-
-         .logo-container {
-            margin-top: 15px;
-         }
-
-         .logo {
-            width: 120px;  /* Smaller logo size on mobile */
-            height: 120px;
-         }
-
-         .navbar .menu {
-            flex-direction: column; /* Stack navigation links vertically */
-            gap: 10px;  /* Adjust spacing for mobile */
-         }
-
-         .navbar .menu a {
-            width: auto;  /* Let links take their natural width */
-            padding: 12px 20px;
-         }
-
-         .dashboard-container {
-            width: 90%;
-            max-width: 350px;  /* Slightly smaller dashboard on mobile */
-         }
-      }
-
-      /* Desktop styles for larger screens */
-      @media (min-width: 769px) {
-         .dashboard-container {
-            max-width: 500px;  /* Larger dashboard width on desktop */
-         }
-
-         .navbar .menu {
-            justify-content: space-between;
-            width: auto;
-         }
+      .verify-button:hover {
+         background-color: #0056b3;
       }
    </style>
 </head>
 <body>
-   <!-- Logo Container (Placed Above Navbar) -->
-   <div class="logo-container">
-      <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
-   </div>
+   <!-- Existing dashboard HTML here -->
 
-   <!-- Navigation Bar -->
-   <div class="navbar">
-      <div class="menu">
-         <a href="addfunds.html" id="addFundsLink">Add Funds</a>
-         <a href="#" id="tournamentLink">Tournament</a>
-         <a href="#" id="withdrawLink">Withdraw</a>
-         <a href="#" id="helpCenterLink">Help Centre</a>
+   <!-- Screenshot Upload and FreeFire UID Input -->
+   <div class="dashboard-container">
+      <div class="upload-container">
+         <h3>Upload Screenshot and Verify FreeFire UID</h3>
+         <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
+         <input type="file" id="screenshotUpload" accept="image/*" required>
+         <button class="verify-button" id="verifyButton">Verify</button>
       </div>
    </div>
 
-   <!-- Dashboard Container -->
-   <div class="dashboard-container">
-      <h2>Welcome to Your Dashboard</h2>
-      <p>Your Balance: ৳<span id="userBalanceDisplay">0</span></p>
-      <button id="purchaseButton">Purchase - 20 tk</button>
-      <button id="logoutButton">Logout</button>
-   </div>
-
-   <!-- Firebase SDKs -->
+   <!-- Firebase SDKs and JavaScript -->
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
    <script>
-      // Firebase configuration
-      const firebaseConfig = {
-         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
-         authDomain: "sphere-tournament.firebaseapp.com",
-         projectId: "sphere-tournament",
-         storageBucket: "sphere-tournament.firebasestorage.app",
-         messagingSenderId: "49933225091",
-         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
-         measurementId: "G-EPKCPTL47V"
+      // Firebase configuration and initialization here
+      // const firebaseConfig = {...};
+      // firebase.initializeApp(firebaseConfig);
+      // const auth = firebase.auth();
+      // const db = firebase.firestore();
+
+      // Handle verification submission
+      document.getElementById("verifyButton").onclick = function() {
+         const freeFireUID = document.getElementById("freeFireUID").value;
+         const screenshot = document.getElementById("screenshotUpload").files[0];
+
+         if (!freeFireUID || !screenshot) {
+            alert("Please enter your FreeFire UID and upload a screenshot.");
+            return;
+         }
+
+         // Prepare form data for Telegram
+         const formData = new FormData();
+         formData.append("chat_id", "7174617845");
+         formData.append("caption", `FreeFire UID: ${freeFireUID}`);
+         formData.append("photo", screenshot);
+
+         // Send screenshot and UID to Telegram bot
+         fetch(`https://api.telegram.org/bot7908043005:AAEQb9H0MWv323vbJ-0ekDwi2PA5TxjFXcc/sendPhoto`, {
+            method: "POST",
+            body: formData
+         })
+         .then(response => response.json())
+         .then(data => {
+            if (data.ok) {
+               alert("Verification request sent. Please wait for admin approval.");
+               // Optionally save UID and verification status to Firestore
+               auth.onAuthStateChanged(user => {
+                  if (user) {
+                     db.collection("users").doc(user.uid).set({
+                        freeFireUID: freeFireUID,
+                        verified: false // Admin will update this to true upon verification
+                     }, { merge: true });
+                  }
+               });
+            } else {
+               alert("Failed to send verification request. Please try again.");
+            }
+         })
+         .catch(error => console.error("Error:", error));
       };
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-
-      // Display user's balance
-      function displayBalance() {
+      // Restrict unverified users from joining tournaments
+      function checkVerificationStatus() {
          auth.onAuthStateChanged(user => {
             if (user) {
                db.collection("users").doc(user.uid).get()
                   .then(doc => {
-                     if (doc.exists) {
-                        const balance = doc.data().balance || 0;
-                        document.getElementById("userBalanceDisplay").innerText = balance;
+                     if (doc.exists && doc.data().verified) {
+                        alert("You are verified and can join tournaments.");
+                        // Allow tournament access
                      } else {
-                        alert("No balance data found.");
+                        alert("You need to be verified to join tournaments.");
+                        // Restrict access by disabling tournament links/buttons
                      }
-                  })
-                  .catch(error => console.error("Error fetching balance:", error));
+                  });
             } else {
-               window.location.href = "login.html"; // Redirect to login if not logged in
+               window.location.href = "login.html";
             }
          });
       }
 
-      // Deduct 20 tk from user's balance on purchase
-      document.getElementById("purchaseButton").onclick = function() {
-         auth.onAuthStateChanged(user => {
-            if (user) {
-               const userRef = db.collection("users").doc(user.uid);
-
-               userRef.get()
-                  .then(doc => {
-                     if (doc.exists) {
-                        let currentBalance = doc.data().balance || 0;
-
-                        if (currentBalance >= 20) {
-                           // Deduct 20 tk from the balance
-                           const newBalance = currentBalance - 20;
-
-                           userRef.update({ balance: newBalance })
-                              .then(() => {
-                                 alert("Purchase successful! 20 tk has been deducted.");
-                                 displayBalance(); // Refresh the balance display
-                              })
-                              .catch(error => alert("Error updating balance: " + error.message));
-                        } else {
-                           alert("Insufficient balance for this purchase.");
-                        }
-                     } else {
-                        alert("No balance data found.");
-                     }
-                  })
-                  .catch(error => console.error("Error fetching user data:", error));
-            } else {
-               window.location.href = "login.html"; // Redirect to login if not logged in
-            }
-         });
-      };
-
-      // Logout function
-      document.getElementById("logoutButton").onclick = function() {
-         auth.signOut()
-            .then(() => window.location.href = "login.html")
-            .catch(error => console.error("Error signing out:", error));
-      };
-
-      // Run balance display on page load
-      displayBalance();
+      // Call this function when the page loads or when trying to access tournament features
+      checkVerificationStatus();
    </script>
 </body>
 </html>
