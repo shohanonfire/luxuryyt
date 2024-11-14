@@ -29,21 +29,22 @@
          background-color: #292d3e;
          padding: 15px 30px;
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         margin-top: 10px; /* Ensure it starts below the logo */
+         margin-top: 10px;
       }
 
-      .navbar .logo {
-         color: #ffffff;
-         font-size: 1.5rem;
-         font-weight: bold;
+      /* Logo Container with fixed width and height */
+      .logo-container {
+         text-align: center;
+         margin-top: 20px;
       }
 
-      .navbar .balance {
-         color: #00aaff;
-         font-size: 1.2rem;
-         font-weight: bold;
+      .logo {
+         width: 150px;
+         height: 150px;
+         object-fit: contain;
       }
 
+      /* Navigation Menu Styles */
       .navbar .menu {
          display: flex;
          gap: 20px;
@@ -52,11 +53,11 @@
       .navbar .menu a {
          color: #ffffff;
          text-decoration: none;
-         font-size: 0.8rem;
+         font-size: 1rem;
          padding: 10px;
          border-radius: 5px;
-         font-weight: bold; /* Make text bold */
-         background-color: #000; /* Black background */
+         font-weight: bold;
+         background-color: #000;
          transition: background 0.3s;
       }
 
@@ -69,9 +70,10 @@
          background: #292d3e;
          border-radius: 8px;
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         width: 500px;
+         width: 100%;
+         max-width: 400px;
          padding: 20px;
-         margin-top: 20px;
+         margin: 20px auto;
          text-align: center;
       }
 
@@ -114,12 +116,40 @@
       #logoutButton:hover {
          background: #d43c3c;
       }
+
+      /* Mobile and Tablet responsive styles */
+      @media (max-width: 768px) {
+         .navbar {
+            padding: 10px 20px;
+         }
+
+         .logo-container {
+            margin-top: 15px;
+         }
+
+         .logo {
+            width: 120px;  /* Smaller logo size on mobile */
+            height: 120px;
+         }
+
+         .dashboard-container {
+            width: 90%;
+            max-width: 350px;  /* Slightly smaller dashboard on mobile */
+         }
+      }
+
+      /* Desktop styles for larger screens */
+      @media (min-width: 769px) {
+         .dashboard-container {
+            max-width: 500px;  /* Larger dashboard width on desktop */
+         }
+      }
    </style>
 </head>
 <body>
    <!-- Logo Container (Placed Above Navbar) -->
-   <div class="logo-container" style="text-align: center; margin-top: 30px;">
-   <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" style="max-width: 100%; height: auto;"/>
+   <div class="logo-container">
+      <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
    </div>
 
    <!-- Navigation Bar -->
@@ -229,4 +259,3 @@
    </script>
 </body>
 </html>
-
