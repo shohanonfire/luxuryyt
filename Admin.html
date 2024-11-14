@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Admin Panel - Add Balance</title>
+   <style>
+      /* Simple styling */
+      body {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+         font-family: Arial, sans-serif;
+         background-color: #f0f2f5;
+      }
+      .admin-panel {
+         background-color: #fff;
+         padding: 20px;
+         border-radius: 10px;
+         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+         width: 300px;
+         text-align: center;
+      }
+      input, button {
+         width: 100%;
+         padding: 10px;
+         margin: 10px 0;
+         border-radius: 5px;
+         border: 1px solid #ccc;
+      }
+      button {
+         background-color: #4CAF50;
+         color: white;
+         cursor: pointer;
+         border: none;
+      }
+   </style>
+</head>
+<body>
+   <div class="admin-panel">
+      <h2>Admin Panel - Add Balance</h2>
+      <form id="adminForm">
+         <input type="text" id="userUid" placeholder="User UID" required>
+         <input type="number" id="addAmount" placeholder="Amount to Add" required>
+         <button type="button" onclick="addBalanceForUser()">Add Balance</button>
+      </form>
+      <p id="statusMessage"></p>
+   </div>
+
+   <!-- Firebase SDKs -->
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+   <script>
+      // Your Firebase config (replace with your actual config)
+      const firebaseConfig = {
+         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+         authDomain: "sphere-tournament.firebaseapp.com",
+         projectId: "sphere-tournament",
+         storageBucket: "sphere-tournament.firebasestorage.app",
+         messagingSenderId: "49933225091",
+         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+         measurementId: "G-EPKCPTL47V"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // Function to add balance for a specific user by UID
+      function addBalanceForUser() {
+         const userUid = document.getElementById("userUid").value;
+         const addAmount = parseFloat(document.getElementById("addAmount").value);
+         const statusMessage = document.getElementById("statusMessage");
+
+         if (!userUid || isNaN(addAmount) || addAmount <= 0) {
+            statusMessage.innerText = "Please enter a valid UID and amount.";
+            return;
+         }
+
+         // Reference to the user's document in Firestore
+         const userDocRef = db.collection("users").doc(userUid);
+
+         // Get the user's current balance, add the amount, and update it
+         userDocRef.get().then(doc => {
+            if (doc.exists) {
+               const currentBalance = doc.data().balance || 0;
+               const newBalance = currentBalance + addAmount;
+
+               // Update the balance in Firestore
+               userDocRef.update({
+                  balance: newBalance
+               }).then(() => {
+                  statusMessage.innerText = "Balance updated successfully!";
+               }).catch(error => {
+                  statusMessage.innerText = "Error updating balance: " + error.message;
+               });
+            } else {
+               statusMessage.innerText = "User not found.";
+            }
+         }).catch(error => {
+            statusMessage.innerText = "Error fetching user data: " + error.message;
+         });
+      }
+   </script>
+</body>
+</html>
