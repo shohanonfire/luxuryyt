@@ -5,7 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Add Funds</title>
    <style>
-      /* Reset and Base Styles */
+      /* Add Funds Page Styles (same as before) */
       * {
          margin: 0;
          padding: 0;
@@ -21,19 +21,6 @@
          color: #ffffff;
       }
 
-      /* Logo Container */
-      .logo-container {
-         text-align: center;
-         margin-top: 20px;
-      }
-
-      .logo {
-         width: 150px;
-         height: 150px;
-         object-fit: contain;
-      }
-
-      /* Navigation Bar Styles */
       .navbar {
          display: flex;
          justify-content: space-between;
@@ -44,39 +31,42 @@
          margin-top: 10px;
       }
 
-      .navbar .menu {
-         display: flex;
-         gap: 20px;
-         justify-content: space-between;
-         width: 100%; /* Take full width */
+      .logo-container {
+         text-align: center;
+         margin-top: 30px;
       }
 
-      .navbar .menu a {
+      .logo {
+         color: #ffffff;
+         font-size: 1.5rem;
+         font-weight: bold;
+      }
+
+      .menu {
+         display: flex;
+         gap: 20px;
+      }
+
+      .menu a {
          color: #ffffff;
          text-decoration: none;
          font-size: 1rem;
-         padding: 10px 15px;
+         padding: 10px;
          border-radius: 5px;
-         font-weight: bold;
-         background-color: #000;
          transition: background 0.3s;
-         width: 100%;  /* Make navigation links equally sized */
-         text-align: center;
       }
 
-      .navbar .menu a:hover {
+      .menu a:hover {
          background-color: #1a75ff;
       }
 
-      /* Add Funds Form Styles */
       .add-funds-container {
          background: #292d3e;
          border-radius: 8px;
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         width: 100%;
-         max-width: 400px;
+         width: 400px;
          padding: 20px;
-         margin: 20px auto;
+         margin-top: 20px;
          text-align: center;
       }
 
@@ -86,148 +76,96 @@
          font-weight: 600;
       }
 
-      .input-field {
+      input, select, button {
          width: 100%;
          padding: 10px;
-         margin-bottom: 20px;
-         background: #fff;
-         color: #333;
-         border: 1px solid #ddd;
-         border-radius: 4px;
+         margin-bottom: 10px;
+         border-radius: 5px;
+         border: 1px solid #ccc;
       }
 
-      .payment-method {
-         width: 100%;
-         padding: 10px;
-         margin-bottom: 20px;
-         background: #fff;
-         color: #333;
-         border: 1px solid #ddd;
-         border-radius: 4px;
-      }
-
-      #addFundsButton {
-         margin-top: 20px;
-         padding: 10px 20px;
-         background: #28a745;
+      button {
+         background-color: #28a745;
          color: #fff;
-         font-weight: bold;
          border: none;
-         border-radius: 4px;
          cursor: pointer;
          transition: background 0.3s;
       }
 
-      #addFundsButton:hover {
-         background: #218838;
+      button:hover {
+         background-color: #218838;
       }
 
-      /* Copy Button and Success Message Styles */
+      #sendMoneyInfo {
+         display: none;
+         margin-top: 20px;
+      }
+
       .copy-button {
-         padding: 5px 10px;
          background-color: #1a75ff;
          color: #fff;
          border: none;
-         border-radius: 4px;
+         padding: 5px 10px;
          cursor: pointer;
-         margin-top: 10px;
+         border-radius: 5px;
          transition: background 0.3s;
       }
 
       .copy-button:hover {
-         background-color: #0059b3;
+         background-color: #1565c0;
       }
 
-      .success-message {
-         margin-top: 10px;
-         color: #28a745;
+      #successMessage {
          display: none;
+         color: green;
+         margin-top: 10px;
       }
 
-      /* Mobile and Tablet responsive styles */
-      @media (max-width: 768px) {
-         .navbar {
-            padding: 10px 20px;
-         }
-
-         .logo-container {
-            margin-top: 15px;
-         }
-
-         .logo {
-            width: 120px;  /* Smaller logo size on mobile */
-            height: 120px;
-         }
-
-         .navbar .menu {
-            flex-direction: column; /* Stack navigation links vertically */
-            gap: 10px;  /* Adjust spacing for mobile */
-         }
-
-         .navbar .menu a {
-            width: auto;  /* Let links take their natural width */
-            padding: 12px 20px;
-         }
-
-         .add-funds-container {
-            width: 90%;
-            max-width: 350px;  /* Slightly smaller dashboard on mobile */
-         }
+      #confirmTransaction {
+         background-color: #ff9900;
       }
 
-      /* Desktop styles for larger screens */
-      @media (min-width: 769px) {
-         .add-funds-container {
-            max-width: 500px;  /* Larger dashboard width on desktop */
-         }
-
-         .navbar .menu {
-            justify-content: space-between;
-            width: auto;
-         }
+      #confirmTransaction:hover {
+         background-color: #e68900;
       }
    </style>
 </head>
 <body>
-   <!-- Logo Container (Placed Above Navbar) -->
    <div class="logo-container">
-      <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
+      <div class="logo">Aura E-sports</div>
    </div>
 
    <!-- Navigation Bar -->
    <div class="navbar">
-      <div class="menu">
-         <a href="dashboard.html" id="dashboardLink">Dashboard</a>
-         <a href="#" id="tournamentLink">Tournament</a>
-         <a href="withdraw.html" id="withdrawLink">Withdraw</a>
-         <a href="help-center.html" id="helpCenterLink">Help Centre</a>
-      </div>
+      <a href="dashboard.html" id="dashboardLink">Dashboard</a>
+      <a href="tournament.html">Tournament</a>
+      <a href="withdraw.html">Withdraw</a>
+      <a href="helpcentre.html">Help Centre</a>
    </div>
 
-   <!-- Add Funds Container -->
+   <!-- Add Funds Form -->
    <div class="add-funds-container">
-      <h2>Add Funds to Your Account</h2>
+      <h2>Add Funds</h2>
       <form id="addFundsForm">
-         <!-- Amount Input -->
-         <input type="number" class="input-field" id="fundsAmount" placeholder="Enter amount (min 20৳)" min="20" required />
-
-         <!-- Payment Method Selection -->
-         <select class="payment-method" id="paymentMethod" required>
+         <input type="number" id="amountInput" placeholder="Enter Amount (min 20৳)" min="20" required>
+         <select id="paymentMethod" required>
             <option value="">Select Payment Method</option>
             <option value="bKash">bKash</option>
             <option value="Nagad">Nagad</option>
             <option value="Rocket">Rocket</option>
          </select>
-
-         <!-- Pay Now Button -->
-         <button type="button" id="addFundsButton">Pay Now</button>
+         <button type="button" id="payNowButton">Pay Now</button>
       </form>
 
       <!-- Send Money Info -->
-      <div id="sendMoneyInfo" style="display: none;">
+      <div id="sendMoneyInfo">
          <p>Send Money: <span id="paymentNumber">01798502666</span></p>
          <button class="copy-button" id="copyButton">Copy</button>
-         <p class="success-message" id="successMessage">Copied successfully!</p>
+         <p id="successMessage">Copied successfully!</p>
+
+         <!-- Transaction ID Input -->
+         <input type="text" id="transactionId" placeholder="Transaction ID / Sender Wallet Number" required>
+         <button type="button" id="confirmTransaction">Confirm</button>
       </div>
    </div>
 
@@ -253,43 +191,58 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // Handle the Pay Now button click
-      document.getElementById("addFundsButton").onclick = function() {
-         const amount = parseFloat(document.getElementById("fundsAmount").value);
+      // Show the Send Money info and hide the form
+      document.getElementById("payNowButton").onclick = function() {
+         const amount = parseFloat(document.getElementById("amountInput").value);
          const paymentMethod = document.getElementById("paymentMethod").value;
 
-         if (isNaN(amount) || amount < 20) {
-            alert("Please enter a valid amount (min 20৳).");
-            return;
+         if (amount >= 20 && paymentMethod) {
+            document.getElementById("addFundsForm").style.display = "none";
+            document.getElementById("sendMoneyInfo").style.display = "block";
+         } else {
+            alert("Please enter a valid amount (min 20৳) and select a payment method.");
          }
-
-         if (!paymentMethod) {
-            alert("Please select a payment method.");
-            return;
-         }
-
-         // Show the Send Money info and hide the form
-         document.getElementById("addFundsForm").style.display = "none";
-         document.getElementById("sendMoneyInfo").style.display = "block";
       };
 
-      // Copy the payment number to clipboard
+      // Copy payment number to clipboard
       document.getElementById("copyButton").onclick = function() {
          const paymentNumber = document.getElementById("paymentNumber").innerText;
          navigator.clipboard.writeText(paymentNumber)
             .then(() => {
-               // Show success message
-               const successMessage = document.getElementById("successMessage");
-               successMessage.style.display = "block";
-
-               // Hide success message after 3 seconds
-               setTimeout(() => {
-                  successMessage.style.display = "none";
-               }, 3000);
+               document.getElementById("successMessage").style.display = "block";
+               setTimeout(() => document.getElementById("successMessage").style.display = "none", 3000);
             })
-            .catch(err => {
-               console.error("Error copying to clipboard: ", err);
-            });
+            .catch(err => console.error("Error copying to clipboard: ", err));
+      };
+
+      // Confirm the transaction and send details to Telegram
+      document.getElementById("confirmTransaction").onclick = function() {
+         const transactionId = document.getElementById("transactionId").value;
+         const email = auth.currentUser.email;
+         const amount = document.getElementById("amountInput").value;
+         const paymentMethod = document.getElementById("paymentMethod").value;
+
+         if (transactionId) {
+            const message = `User Email: ${email}\nAmount: ৳${amount}\nPayment Method: ${paymentMethod}\nTransaction ID / Wallet: ${transactionId}`;
+
+            // Send message to Telegram
+            const botToken = "7902145261:AAHY6gBHmMN_ubLJbnEpJCtnCd0HvUB71M0";
+            const chatId = "7174617845";
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(telegramUrl)
+               .then(response => response.json())
+               .then(data => {
+                  if (data.ok) {
+                     alert("Transaction confirmed and details sent to admin.");
+                  } else {
+                     alert("Failed to send message to Telegram.");
+                  }
+               })
+               .catch(error => console.error("Error sending message to Telegram:", error));
+         } else {
+            alert("Please enter the Transaction ID / Wallet Number.");
+         }
       };
    </script>
 </body>
