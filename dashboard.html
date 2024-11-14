@@ -3,21 +3,73 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>User Dashboard</title>
+   <title>Dashboard</title>
+   <style>
+      /* Reset and Base Styles */
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         font-family: Arial, sans-serif;
+      }
+
+      body {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         min-height: 100vh;
+         background: #1c1e29;
+         color: #ffffff;
+      }
+
+      .dashboard-container {
+         background: #292d3e;
+         border-radius: 8px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+         width: 400px;
+         padding: 20px;
+         text-align: center;
+      }
+
+      .dashboard-container h2 {
+         color: #00aaff;
+         margin-bottom: 20px;
+         font-weight: 600;
+      }
+
+      .balance-display {
+         font-size: 1.5rem;
+         font-weight: bold;
+         margin: 20px 0;
+         padding: 10px;
+         background: #1a75ff;
+         border-radius: 5px;
+         color: #fff;
+      }
+
+      #logoutButton {
+         margin-top: 20px;
+         padding: 10px 20px;
+         background: #ff4747;
+         color: #fff;
+         font-weight: bold;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         transition: background 0.3s;
+      }
+
+      #logoutButton:hover {
+         background: #d43c3c;
+      }
+   </style>
 </head>
 <body>
-   <h2>Welcome to Your Dashboard</h2>
-
-   <p>Your Current Balance: $<span id="userBalance">0</span></p>
-
-   <h3>Add Balance</h3>
-   <form id="addBalanceForm">
-      <input type="number" id="amount" placeholder="Amount to Add" required>
-      <button type="button" onclick="addBalance()">Add Balance</button>
-   </form>
-
-   <h3>Logout</h3>
-   <button id="logoutButton">Logout</button>
+   <div class="dashboard-container">
+      <h2>Welcome to Your Dashboard</h2>
+      <p>Your Balance: ৳<span id="userBalance">0</span></p>
+      <button id="logoutButton">Logout</button>
+   </div>
 
    <!-- Firebase SDKs -->
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
@@ -25,12 +77,12 @@
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
    <script>
-      // Your Firebase config (replace with your actual config)
+      // Firebase configuration
       const firebaseConfig = {
          apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
          authDomain: "sphere-tournament.firebaseapp.com",
          projectId: "sphere-tournament",
-         storageBucket: "sphere-tournament.appspot.com",
+         storageBucket: "sphere-tournament.firebasestorage.app",
          messagingSenderId: "49933225091",
          appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
          measurementId: "G-EPKCPTL47V"
@@ -41,81 +93,35 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // Monitor the auth state
-      auth.onAuthStateChanged((user) => {
-         if (user) {
-            // If user is logged in, proceed to show their dashboard
-            console.log('User logged in:', user.uid);
-            getUserBalance(user);
-         } else {
-            // Redirect to login page if the user is not logged in
-            console.log('User not logged in. Redirecting...');
-            window.location.href = "login.html"; // Redirect to login page
-         }
-      });
-
-      // Display current balance for the logged-in user
-      function getUserBalance(user) {
-         db.collection("users").doc(user.uid).get()
-            .then((doc) => {
-               if (doc.exists) {
-                  const balance = doc.data().balance || 0;
-                  document.getElementById("userBalance").innerText = balance;
-               } else {
-                  console.log("No such user found.");
-               }
-            })
-            .catch((error) => {
-               console.error("Error getting document:", error);
-            });
+      // Display user's balance
+      function displayBalance() {
+         auth.onAuthStateChanged(user => {
+            if (user) {
+               db.collection("users").doc(user.uid).get()
+                  .then(doc => {
+                     if (doc.exists) {
+                        const balance = doc.data().balance || 0;
+                        document.getElementById("userBalance").innerText = balance;
+                     } else {
+                        alert("No balance data found.");
+                     }
+                  })
+                  .catch(error => console.error("Error fetching balance:", error));
+            } else {
+               window.location.href = "login.html"; // Redirect to login if not logged in
+            }
+         });
       }
 
-      // Add balance to user's account
-      function addBalance() {
-         const amountToAdd = parseFloat(document.getElementById("amount").value);
-         if (isNaN(amountToAdd) || amountToAdd <= 0) {
-            alert("Please enter a valid amount.");
-            return;
-         }
-
-         // Get the current user's balance and update it
-         const user = auth.currentUser;
-         db.collection("users").doc(user.uid).get()
-            .then((doc) => {
-               if (doc.exists) {
-                  const currentBalance = doc.data().balance || 0;
-                  const newBalance = currentBalance + amountToAdd;
-
-                  // Update the user's balance
-                  db.collection("users").doc(user.uid).update({
-                     balance: newBalance
-                  })
-                  .then(() => {
-                     alert("Balance updated successfully!");
-                     getUserBalance(user); // Refresh the displayed balance
-                  })
-                  .catch((error) => {
-                     console.error("Error updating balance:", error);
-                  });
-               } else {
-                  console.log("User document not found.");
-               }
-            })
-            .catch((error) => {
-               console.error("Error fetching user document:", error);
-            });
-      }
-
-      // Logout functionality
-      document.getElementById("logoutButton").onclick = function () {
+      // Logout function
+      document.getElementById("logoutButton").onclick = function() {
          auth.signOut()
-            .then(() => {
-               window.location.href = "login.html"; // Redirect to login page
-            })
-            .catch((error) => {
-               console.error("Error signing out:", error);
-            });
+            .then(() => window.location.href = "login.html")
+            .catch(error => console.error("Error signing out:", error));
       };
+
+      // Run balance display on page load
+      displayBalance();
    </script>
 </body>
 </html>
