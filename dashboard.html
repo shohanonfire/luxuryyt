@@ -55,6 +55,8 @@
          font-size: 1rem;
          padding: 10px;
          border-radius: 5px;
+         font-weight: bold; /* Make text bold */
+         background-color: #000; /* Black background */
          transition: background 0.3s;
       }
 
@@ -122,6 +124,7 @@
 
    <!-- Navigation Bar -->
    <div class="navbar">
+      <div class="menu">
          <a href="#" id="addFundsLink">Add Funds</a>
          <a href="#" id="tournamentLink">Tournament</a>
          <a href="#" id="withdrawLink">Withdraw</a>
@@ -167,7 +170,6 @@
                   .then(doc => {
                      if (doc.exists) {
                         const balance = doc.data().balance || 0;
-                        document.getElementById("userBalance").innerText = balance;
                         document.getElementById("userBalanceDisplay").innerText = balance;
                      } else {
                         alert("No balance data found.");
@@ -227,3 +229,4 @@
    </script>
 </body>
 </html>
+
