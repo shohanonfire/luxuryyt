@@ -47,7 +47,7 @@
          color: #fff;
       }
 
-      #logoutButton {
+      #logoutButton, #purchaseButton {
          margin-top: 20px;
          padding: 10px 20px;
          background: #ff4747;
@@ -59,6 +59,14 @@
          transition: background 0.3s;
       }
 
+      #purchaseButton {
+         background: #28a745;
+      }
+
+      #purchaseButton:hover {
+         background: #218838;
+      }
+
       #logoutButton:hover {
          background: #d43c3c;
       }
@@ -68,6 +76,7 @@
    <div class="dashboard-container">
       <h2>Welcome to Your Dashboard</h2>
       <p>Your Balance: ৳<span id="userBalance">0</span></p>
+      <button id="purchaseButton">Purchase - 20 tk</button>
       <button id="logoutButton">Logout</button>
    </div>
 
@@ -112,6 +121,41 @@
             }
          });
       }
+
+      // Deduct 20 tk from user's balance on purchase
+      document.getElementById("purchaseButton").onclick = function() {
+         auth.onAuthStateChanged(user => {
+            if (user) {
+               const userRef = db.collection("users").doc(user.uid);
+
+               userRef.get()
+                  .then(doc => {
+                     if (doc.exists) {
+                        let currentBalance = doc.data().balance || 0;
+
+                        if (currentBalance >= 20) {
+                           // Deduct 20 tk from the balance
+                           const newBalance = currentBalance - 20;
+
+                           userRef.update({ balance: newBalance })
+                              .then(() => {
+                                 alert("Purchase successful! 20 tk has been deducted.");
+                                 displayBalance(); // Refresh the balance display
+                              })
+                              .catch(error => alert("Error updating balance: " + error.message));
+                        } else {
+                           alert("Insufficient balance for this purchase.");
+                        }
+                     } else {
+                        alert("No balance data found.");
+                     }
+                  })
+                  .catch(error => console.error("Error fetching user data:", error));
+            } else {
+               window.location.href = "login.html"; // Redirect to login if not logged in
+            }
+         });
+      };
 
       // Logout function
       document.getElementById("logoutButton").onclick = function() {
