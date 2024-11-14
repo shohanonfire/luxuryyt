@@ -226,110 +226,116 @@
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
-   <script>
-      // Firebase configuration
-      const firebaseConfig = {
-         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
-         authDomain: "sphere-tournament.firebaseapp.com",
-         projectId: "sphere-tournament",
-         storageBucket: "sphere-tournament.firebasestorage.app",
-         messagingSenderId: "49933225091",
-         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
-         measurementId: "G-EPKCPTL47V"
-      };
+<script>
+   // Firebase configuration
+   const firebaseConfig = {
+      apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+      authDomain: "sphere-tournament.firebaseapp.com",
+      projectId: "sphere-tournament",
+      storageBucket: "sphere-tournament.firebasestorage.app",
+      messagingSenderId: "49933225091",
+      appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+      measurementId: "G-EPKCPTL47V"
+   };
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.firestore();
+   // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+   const auth = firebase.auth();
+   const db = firebase.firestore();
 
-      // Handle the Pay Now button click
-      document.getElementById("addFundsButton").onclick = function() {
-         const amount = parseFloat(document.getElementById("fundsAmount").value);
-         const paymentMethod = document.getElementById("paymentMethod").value;
+   // Handle the Pay Now button click
+   document.getElementById("addFundsButton").onclick = function() {
+      const amount = parseFloat(document.getElementById("fundsAmount").value);
+      const paymentMethod = document.getElementById("paymentMethod").value;
 
-         if (isNaN(amount) || amount < 20) {
-            alert("Please enter a valid amount (min 20৳).");
-            return;
-         }
+      if (isNaN(amount) || amount < 20) {
+         alert("Please enter a valid amount (min 20৳).");
+         return;
+      }
 
-         if (!paymentMethod) {
-            alert("Please select a payment method.");
-            return;
-         }
+      if (!paymentMethod) {
+         alert("Please select a payment method.");
+         return;
+      }
 
-         // Show the Send Money info and hide the form
-         document.getElementById("addFundsForm").style.display = "none";
-         document.getElementById("sendMoneyInfo").style.display = "block";
-      };
+      // Show the Send Money info and hide the form
+      document.getElementById("addFundsForm").style.display = "none";
+      document.getElementById("sendMoneyInfo").style.display = "block";
+   };
 
-      // Copy the payment number to clipboard
-      document.getElementById("copyButton").onclick = function() {
-         const paymentNumber = document.getElementById("paymentNumber").innerText;
-         navigator.clipboard.writeText(paymentNumber)
-            .then(() => {
-               // Show success message
-               const successMessage = document.getElementById("successMessage");
-               successMessage.style.display = "block";
+   // Copy the payment number to clipboard
+   document.getElementById("copyButton").onclick = function() {
+      const paymentNumber = document.getElementById("paymentNumber").innerText;
+      navigator.clipboard.writeText(paymentNumber)
+         .then(() => {
+            // Show success message
+            const successMessage = document.getElementById("successMessage");
+            successMessage.style.display = "block";
 
-               // Hide success message after 3 seconds
-               setTimeout(() => {
-                  successMessage.style.display = "none";
-               }, 3000);
-            })
-            .catch(err => {
-               console.error("Error copying to clipboard: ", err);
-            });
-      };
-
-      // Handle Confirm Transaction Button
-      document.getElementById("confirmTransaction").onclick = function() {
-         const transactionId = document.getElementById("transactionIdInput").value;
-         const email = auth.currentUser ? auth.currentUser.email : 'User not logged in';
-         const amount = parseFloat(document.getElementById("fundsAmount").value);
-         const paymentMethod = document.getElementById("paymentMethod").value;
-
-         if (!transactionId) {
-            alert("Please enter the transaction ID or sender wallet number.");
-            return;
-         }
-
-         // Prepare the message to send to Telegram
-         const message = `
-            New Add Funds Request:
-            Email: ${email}
-            Amount: ${amount}৳
-            Payment Method: ${paymentMethod}
-            Transaction ID / Sender Wallet Number: ${transactionId}
-         `;
-
-         // Send the message to Telegram using the Bot API
-         const telegramBotToken = '7902145261:AAHY6gBHmMN_ubLJbnEpJCtnCd0HvUB71M0';
-         const chatId = '7174617845';
-
-         fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-               chat_id: chatId,
-               text: message
-            })
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+               successMessage.style.display = "none";
+            }, 3000);
          })
-         .then(response => response.json())
-         .then(data => {
-            if (data.ok) {
-               alert("Funds request successfully confirmed and sent to Telegram!");
-            } else {
-               alert("Failed to send message to Telegram. Please try again.");
-            }
-         })
-         .catch(error => {
-            console.error("Error sending message to Telegram: ", error);
-            alert("An error occurred. Please try again later.");
+         .catch(err => {
+            console.error("Error copying to clipboard: ", err);
          });
-      };
-   </script>
+   };
+
+   // Handle Confirm Transaction Button
+   document.getElementById("confirmTransaction").onclick = function() {
+      const transactionId = document.getElementById("transactionIdInput").value;
+      const email = auth.currentUser ? auth.currentUser.email : 'User not logged in';
+      const amount = parseFloat(document.getElementById("fundsAmount").value);
+      const paymentMethod = document.getElementById("paymentMethod").value;
+
+      if (!transactionId) {
+         alert("Please enter the transaction ID or sender wallet number.");
+         return;
+      }
+
+      // Prepare the message to send to Telegram
+      const message = `
+         New Add Funds Request:
+         Email: ${email}
+         Amount: ${amount}৳
+         Payment Method: ${paymentMethod}
+         Transaction ID / Sender Wallet Number: ${transactionId}
+      `;
+
+      // Send the message to Telegram using the Bot API
+      const telegramBotToken = '7902145261:AAHY6gBHmMN_ubLJbnEpJCtnCd0HvUB71M0';
+      const chatId = '7174617845';
+
+      fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            chat_id: chatId,
+            text: message
+         })
+      })
+      .then(response => response.json())
+      .then(data => {
+         if (data.ok) {
+            alert("Funds request successfully confirmed and sent to Telegram!");
+
+            // Redirect to dashboard after 5 seconds
+            setTimeout(function() {
+               window.location.href = "dashboard.html";
+            }, 5000); // Redirect after 5 seconds
+         } else {
+            alert("Failed to send message to Telegram. Please try again.");
+         }
+      })
+      .catch(error => {
+         console.error("Error sending message to Telegram: ", error);
+         alert("An error occurred. Please try again later.");
+      });
+   };
+</script>
+
 </body>
 </html>
