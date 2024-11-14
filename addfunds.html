@@ -246,7 +246,26 @@
       // Handle the Pay Now button click
       document.getElementById("addFundsButton").onclick = function() {
          const amount = parseFloat(document.getElementById("fundsAmount").value);
-                  const paymentNumber = document.getElementById("paymentNumber").innerText;
+         const paymentMethod = document.getElementById("paymentMethod").value;
+
+         if (isNaN(amount) || amount < 20) {
+            alert("Please enter a valid amount (min 20৳).");
+            return;
+         }
+
+         if (!paymentMethod) {
+            alert("Please select a payment method.");
+            return;
+         }
+
+         // Show the Send Money info and hide the form
+         document.getElementById("addFundsForm").style.display = "none";
+         document.getElementById("sendMoneyInfo").style.display = "block";
+      };
+
+      // Copy the payment number to clipboard
+      document.getElementById("copyButton").onclick = function() {
+         const paymentNumber = document.getElementById("paymentNumber").innerText;
          navigator.clipboard.writeText(paymentNumber)
             .then(() => {
                // Show success message
@@ -313,4 +332,4 @@
       };
    </script>
 </body>
-</html
+</html>
