@@ -1,4 +1,4 @@
-           <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
@@ -117,62 +117,61 @@
          background: #d43c3c;
       }
 
- .verificationSection {
-   background-color: #232733;
-   border-radius: 10px;
-   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-   width: 90%;
-   max-width: 450px;
-   padding: 25px;
-   margin: 20px auto;
-   text-align: center;
-   color: #ffffff;
-   z-index: 1000; /* Ensures it is visible */
-}
+      /* Verification Section Styles */
+      .verificationSection {
+         background-color: #232733;
+         border-radius: 10px;
+         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+         width: 90%;
+         max-width: 450px;
+         padding: 25px;
+         margin: 20px auto;
+         text-align: center;
+         color: #ffffff;
+      }
 
-.verificationSection h3 {
-   color: #1da1f2;
-   font-size: 1.6rem;
-   margin-bottom: 20px;
-   font-weight: bold;
-}
+      .verificationSection h3 {
+         color: #1da1f2;
+         font-size: 1.6rem;
+         margin-bottom: 20px;
+         font-weight: bold;
+      }
 
-.verificationSection input#freeFireUID {
-   width: 100%;
-   padding: 15px;
-   margin: 10px 0;
-   border-radius: 10px;
-   border: 1px solid #1da1f2;
-   background-color: #2d3442;
-   color: #ffffff;
-   font-size: 1.1rem;
-   text-align: center;
-}
+      .verificationSection input#freeFireUID {
+         width: 100%;
+         padding: 15px;
+         margin: 10px 0;
+         border-radius: 10px;
+         border: 1px solid #1da1f2;
+         background-color: #2d3442;
+         color: #ffffff;
+         font-size: 1.1rem;
+         text-align: center;
+      }
 
-.verificationSection input#screenshotUpload {
-   width: 100%;
-   padding: 10px;
-   margin: 10px 0;
-   border-radius: 10px;
-   background-color: #2d3442;
-   color: #ffffff;
-   cursor: pointer;
-   font-size: 1rem;
-}
+      .verificationSection input#screenshotUpload {
+         width: 100%;
+         padding: 10px;
+         margin: 10px 0;
+         border-radius: 10px;
+         background-color: #2d3442;
+         color: #ffffff;
+         cursor: pointer;
+         font-size: 1rem;
+      }
 
-.verificationSection .verifyButton {
-   background-color: #1da1f2;
-   color: white;
-   border: none;
-   padding: 12px 25px;
-   margin-top: 15px;
-   border-radius: 10px;
-   cursor: pointer;
-   transition: background 0.3s ease;
-   font-weight: bold;
-   font-size: 1.1rem;
-}
-
+      .verificationSection .verifyButton {
+         background-color: #1da1f2;
+         color: white;
+         border: none;
+         padding: 12px 25px;
+         margin-top: 15px;
+         border-radius: 10px;
+         cursor: pointer;
+         transition: background 0.3s ease;
+         font-weight: bold;
+         font-size: 1.1rem;
+      }
 
       /* Mobile and Tablet responsive styles */
       @media (max-width: 768px) {
@@ -229,11 +228,11 @@
    </div>
 
    <!-- Screenshot Upload and FreeFire UID Input -->
-   <div class="upload-container" id="verificationSection" style="display: none;">
+   <div class="verificationSection" id="verificationSection" style="display: none;">
       <h3>Upload Screenshot and Verify FreeFire UID</h3>
       <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
       <input type="file" id="screenshotUpload" accept="image/*" required>
-      <button class="verify-button" id="verifyButton">Verify</button>
+      <button class="verifyButton" id="verifyButton">Verify</button>
    </div>
 
    <!-- Firebase SDKs and JavaScript -->
