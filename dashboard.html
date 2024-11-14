@@ -5,12 +5,123 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Dashboard</title>
    <style>
-      /* Existing CSS styles here */
+      /* Reset and Base Styles */
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         font-family: Arial, sans-serif;
+      }
 
-      /* New styles for screenshot upload and verification */
+      body {
+         display: flex;
+         flex-direction: column;
+         min-height: 100vh;
+         background: #1c1e29;
+         color: #ffffff;
+      }
+
+      /* Logo Container */
+      .logo-container {
+         text-align: center;
+         margin-top: 20px;
+      }
+
+      .logo {
+         width: 150px;
+         height: 150px;
+         object-fit: contain;
+      }
+
+      /* Navigation Bar Styles */
+      .navbar {
+         display: flex;
+         justify-content: space-around;
+         align-items: center;
+         background-color: #292d3e;
+         padding: 15px 30px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+         margin-top: 10px;
+      }
+
+      .navbar .menu {
+         display: flex;
+         gap: 20px;
+      }
+
+      .navbar .menu a {
+         color: #ffffff;
+         text-decoration: none;
+         font-size: 1rem;
+         padding: 10px 15px;
+         border-radius: 5px;
+         font-weight: bold;
+         background-color: #000;
+         transition: background 0.3s;
+         text-align: center;
+      }
+
+      .navbar .menu a:hover {
+         background-color: #1a75ff;
+      }
+
+      /* Dashboard Container */
+      .dashboard-container {
+         background: #292d3e;
+         border-radius: 8px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+         width: 100%;
+         max-width: 400px;
+         padding: 20px;
+         margin: 20px auto;
+         text-align: center;
+      }
+
+      .dashboard-container h2 {
+         color: #00aaff;
+         margin-bottom: 20px;
+         font-weight: 600;
+      }
+
+      .balance-display {
+         font-size: 1.5rem;
+         font-weight: bold;
+         margin: 20px 0;
+         padding: 10px;
+         background: #1a75ff;
+         border-radius: 5px;
+         color: #fff;
+      }
+
+      #purchaseButton, #logoutButton {
+         margin-top: 20px;
+         padding: 10px 20px;
+         background: #ff4747;
+         color: #fff;
+         font-weight: bold;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         transition: background 0.3s;
+      }
+
+      #purchaseButton {
+         background: #28a745;
+      }
+
+      #purchaseButton:hover {
+         background: #218838;
+      }
+
+      #logoutButton:hover {
+         background: #d43c3c;
+      }
+
+      /* Screenshot Upload and FreeFire UID Section */
       .upload-container {
          margin-top: 20px;
       }
+      
       .verify-button {
          background-color: #007bff;
          color: white;
@@ -22,16 +133,65 @@
          display: inline-block;
          margin-top: 10px;
       }
+
       .verify-button:hover {
          background-color: #0056b3;
+      }
+
+      /* Mobile and Tablet responsive styles */
+      @media (max-width: 768px) {
+         .logo-container {
+            margin-top: 15px;
+         }
+
+         .logo {
+            width: 120px; 
+            height: 120px;
+         }
+
+         .navbar .menu {
+            flex-direction: column;
+            gap: 10px;
+         }
+
+         .dashboard-container {
+            width: 90%;
+            max-width: 350px;
+         }
+      }
+
+      /* Desktop styles for larger screens */
+      @media (min-width: 769px) {
+         .dashboard-container {
+            max-width: 500px;
+         }
       }
    </style>
 </head>
 <body>
-   <!-- Existing dashboard HTML here -->
+   <!-- Logo Container (Placed Above Navbar) -->
+   <div class="logo-container">
+      <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
+   </div>
 
-   <!-- Screenshot Upload and FreeFire UID Input -->
+   <!-- Navigation Bar -->
+   <div class="navbar">
+      <div class="menu">
+         <a href="addfunds.html" id="addFundsLink">Add Funds</a>
+         <a href="#" id="tournamentLink">Tournament</a>
+         <a href="#" id="withdrawLink">Withdraw</a>
+         <a href="#" id="helpCenterLink">Help Centre</a>
+      </div>
+   </div>
+
+   <!-- Dashboard Container -->
    <div class="dashboard-container">
+      <h2>Welcome to Your Dashboard</h2>
+      <p>Your Balance: ৳<span id="userBalanceDisplay">0</span></p>
+      <button id="purchaseButton">Purchase - 20 tk</button>
+      <button id="logoutButton">Logout</button>
+
+      <!-- Screenshot Upload and FreeFire UID Input -->
       <div class="upload-container">
          <h3>Upload Screenshot and Verify FreeFire UID</h3>
          <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
@@ -45,76 +205,83 @@
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
-   <script>
-      // Firebase configuration and initialization here
-      // const firebaseConfig = {...};
-      // firebase.initializeApp(firebaseConfig);
-      // const auth = firebase.auth();
-      // const db = firebase.firestore();
+<script>
+   // Firebase configuration and initialization
+   const firebaseConfig = {
+      apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+      authDomain: "sphere-tournament.firebaseapp.com",
+      projectId: "sphere-tournament",
+      storageBucket: "sphere-tournament.firebasestorage.app",
+      messagingSenderId: "49933225091",
+      appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+      measurementId: "G-EPKCPTL47V"
+   };
 
-      // Handle verification submission
-      document.getElementById("verifyButton").onclick = function() {
-         const freeFireUID = document.getElementById("freeFireUID").value;
-         const screenshot = document.getElementById("screenshotUpload").files[0];
+   firebase.initializeApp(firebaseConfig);
+   const auth = firebase.auth();
+   const db = firebase.firestore();
 
-         if (!freeFireUID || !screenshot) {
-            alert("Please enter your FreeFire UID and upload a screenshot.");
-            return;
-         }
-
-         // Prepare form data for Telegram
-         const formData = new FormData();
-         formData.append("chat_id", "7174617845");
-         formData.append("caption", `FreeFire UID: ${freeFireUID}`);
-         formData.append("photo", screenshot);
-
-         // Send screenshot and UID to Telegram bot
-         fetch(`https://api.telegram.org/bot7908043005:AAEQb9H0MWv323vbJ-0ekDwi2PA5TxjFXcc/sendPhoto`, {
-            method: "POST",
-            body: formData
-         })
-         .then(response => response.json())
-         .then(data => {
-            if (data.ok) {
-               alert("Verification request sent. Please wait for admin approval.");
-               // Optionally save UID and verification status to Firestore
-               auth.onAuthStateChanged(user => {
-                  if (user) {
-                     db.collection("users").doc(user.uid).set({
-                        freeFireUID: freeFireUID,
-                        verified: false // Admin will update this to true upon verification
-                     }, { merge: true });
+   // Display user's balance
+   function displayBalance() {
+      auth.onAuthStateChanged(user => {
+         if (user) {
+            db.collection("users").doc(user.uid).get()
+               .then(doc => {
+                  if (doc.exists) {
+                     const balance = doc.data().balance || 0;
+                     document.getElementById("userBalanceDisplay").innerText = balance;
+                  } else {
+                     alert("No balance data found.");
                   }
-               });
-            } else {
-               alert("Failed to send verification request. Please try again.");
-            }
-         })
-         .catch(error => console.error("Error:", error));
-      };
+               })
+               .catch(error => console.error("Error fetching balance:", error));
+         } else {
+            window.location.href = "login.html";
+         }
+      });
+   }
 
-      // Restrict unverified users from joining tournaments
-      function checkVerificationStatus() {
-         auth.onAuthStateChanged(user => {
-            if (user) {
-               db.collection("users").doc(user.uid).get()
-                  .then(doc => {
-                     if (doc.exists && doc.data().verified) {
-                        alert("You are verified and can join tournaments.");
-                        // Allow tournament access
-                     } else {
-                        alert("You need to be verified to join tournaments.");
-                        // Restrict access by disabling tournament links/buttons
-                     }
-                  });
-            } else {
-               window.location.href = "login.html";
-            }
-         });
-      }
+   // Verify UID and Screenshot, and send data to Telegram
+   document.getElementById("verifyButton").onclick = function() {
+      const freeFireUID = document.getElementById("freeFireUID").value;
+      const screenshot = document.getElementById("screenshotUpload").files[0];
 
-      // Call this function when the page loads or when trying to access tournament features
-      checkVerificationStatus();
-   </script>
+      auth.onAuthStateChanged(user => {
+         if (user) {
+            if (!freeFireUID || !screenshot) {
+               alert("Please enter your FreeFire UID and upload a screenshot.");
+               return;
+            }
+
+            const formData = new FormData();
+            formData.append("chat_id", "7174617845");
+            formData.append("caption", `FreeFire UID: ${freeFireUID}\nUser Email: ${user.email}`);
+            formData.append("photo", screenshot);
+
+            fetch(`https://api.telegram.org/bot7908043005:AAEQb9H0MWv323vbJ-0ekDwi2PA5TxjFXcc/sendPhoto`, {
+               method: "POST",
+               body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+               if (data.ok) {
+                  alert("Verification request sent. Please wait for admin approval.");
+                  db.collection("users").doc(user.uid).set({
+                     freeFireUID: freeFireUID,
+                     verified: false
+                  }, { merge: true });
+               } else {
+                  alert("Failed to send verification request. Please try again.");
+               }
+            })
+            .catch(error => console.error("Error:", error));
+         } else {
+            alert("Please log in to verify.");
+         }
+      });
+   };
+
+   displayBalance();
+</script>
 </body>
 </html>
