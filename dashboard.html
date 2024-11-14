@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+           <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
@@ -190,14 +190,14 @@
       <p>Your Balance: ৳<span id="userBalanceDisplay">0</span></p>
       <button id="purchaseButton">Purchase - 20 tk</button>
       <button id="logoutButton">Logout</button>
+   </div>
 
-      <!-- Screenshot Upload and FreeFire UID Input -->
-      <div class="upload-container">
-         <h3>Upload Screenshot and Verify FreeFire UID</h3>
-         <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
-         <input type="file" id="screenshotUpload" accept="image/*" required>
-         <button class="verify-button" id="verifyButton">Verify</button>
-      </div>
+   <!-- Screenshot Upload and FreeFire UID Input -->
+   <div class="upload-container" id="verificationSection" style="display: none;">
+      <h3>Upload Screenshot and Verify FreeFire UID</h3>
+      <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
+      <input type="file" id="screenshotUpload" accept="image/*" required>
+      <button class="verify-button" id="verifyButton">Verify</button>
    </div>
 
    <!-- Firebase SDKs and JavaScript -->
@@ -206,7 +206,6 @@
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
 <script>
-   // Firebase configuration and initialization
    const firebaseConfig = {
       apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
       authDomain: "sphere-tournament.firebaseapp.com",
@@ -230,6 +229,16 @@
                   if (doc.exists) {
                      const balance = doc.data().balance || 0;
                      document.getElementById("userBalanceDisplay").innerText = balance;
+                     const verified = doc.data().verified || false;
+
+                     // Show or hide verification section based on verification status
+                     if (!verified) {
+                        document.getElementById("verificationSection").style.display = "block";
+                        document.getElementById("tournamentLink").onclick = function(e) {
+                           e.preventDefault();
+                           alert("Please complete verification to join tournaments.");
+                        };
+                     }
                   } else {
                      alert("No balance data found.");
                   }
