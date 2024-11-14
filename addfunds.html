@@ -5,7 +5,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Add Funds</title>
    <style>
-      /* Add Funds Page Styles (same as before) */
+      /* Reset and Base Styles */
       * {
          margin: 0;
          padding: 0;
@@ -21,6 +21,19 @@
          color: #ffffff;
       }
 
+      /* Logo Container */
+      .logo-container {
+         text-align: center;
+         margin-top: 20px;
+      }
+
+      .logo {
+         width: 150px;
+         height: 150px;
+         object-fit: contain;
+      }
+
+      /* Navigation Bar Styles */
       .navbar {
          display: flex;
          justify-content: space-between;
@@ -31,42 +44,39 @@
          margin-top: 10px;
       }
 
-      .logo-container {
-         text-align: center;
-         margin-top: 30px;
-      }
-
-      .logo {
-         color: #ffffff;
-         font-size: 1.5rem;
-         font-weight: bold;
-      }
-
-      .menu {
+      .navbar .menu {
          display: flex;
          gap: 20px;
+         justify-content: space-between;
+         width: 100%; /* Take full width */
       }
 
-      .menu a {
+      .navbar .menu a {
          color: #ffffff;
          text-decoration: none;
          font-size: 1rem;
-         padding: 10px;
+         padding: 10px 15px;
          border-radius: 5px;
+         font-weight: bold;
+         background-color: #000;
          transition: background 0.3s;
+         width: 100%;  /* Make navigation links equally sized */
+         text-align: center;
       }
 
-      .menu a:hover {
+      .navbar .menu a:hover {
          background-color: #1a75ff;
       }
 
+      /* Add Funds Form Styles */
       .add-funds-container {
          background: #292d3e;
          border-radius: 8px;
          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         width: 400px;
+         width: 100%;
+         max-width: 400px;
          padding: 20px;
-         margin-top: 20px;
+         margin: 20px auto;
          text-align: center;
       }
 
@@ -76,95 +86,137 @@
          font-weight: 600;
       }
 
-      input, select, button {
+      .input-field {
          width: 100%;
          padding: 10px;
-         margin-bottom: 10px;
-         border-radius: 5px;
-         border: 1px solid #ccc;
+         margin-bottom: 20px;
+         background: #fff;
+         color: #333;
+         border: 1px solid #ddd;
+         border-radius: 4px;
       }
 
-      button {
-         background-color: #28a745;
+      .payment-method {
+         width: 100%;
+         padding: 10px;
+         margin-bottom: 20px;
+         background: #fff;
+         color: #333;
+         border: 1px solid #ddd;
+         border-radius: 4px;
+      }
+
+      #addFundsButton {
+         margin-top: 20px;
+         padding: 10px 20px;
+         background: #28a745;
          color: #fff;
+         font-weight: bold;
          border: none;
+         border-radius: 4px;
          cursor: pointer;
          transition: background 0.3s;
       }
 
-      button:hover {
-         background-color: #218838;
+      #addFundsButton:hover {
+         background: #218838;
       }
 
-      #sendMoneyInfo {
-         display: none;
-         margin-top: 20px;
-      }
-
+      /* Copy Button and Success Message Styles */
       .copy-button {
+         padding: 5px 10px;
          background-color: #1a75ff;
          color: #fff;
          border: none;
-         padding: 5px 10px;
+         border-radius: 4px;
          cursor: pointer;
-         border-radius: 5px;
+         margin-top: 10px;
          transition: background 0.3s;
       }
 
       .copy-button:hover {
-         background-color: #1565c0;
+         background-color: #0059b3;
       }
 
-      #successMessage {
-         display: none;
-         color: green;
+      .success-message {
          margin-top: 10px;
+         color: #28a745;
+         display: none;
+      }
+
+      /* New Transaction ID / Sender Wallet Styles */
+      #transactionIdInput {
+         width: 100%;
+         padding: 10px;
+         margin-top: 20px;
+         background: #fff;
+         color: #333;
+         border: 1px solid #ddd;
+         border-radius: 4px;
       }
 
       #confirmTransaction {
-         background-color: #ff9900;
+         padding: 10px 20px;
+         background: #ff9900;
+         color: #fff;
+         font-weight: bold;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         transition: background 0.3s;
+         margin-top: 15px;
       }
 
       #confirmTransaction:hover {
-         background-color: #e68900;
+         background: #e68900;
       }
    </style>
 </head>
 <body>
+   <!-- Logo Container (Placed Above Navbar) -->
    <div class="logo-container">
-      <div class="logo">Aura E-sports</div>
+      <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
    </div>
 
    <!-- Navigation Bar -->
    <div class="navbar">
-      <a href="dashboard.html" id="dashboardLink">Dashboard</a>
-      <a href="tournament.html">Tournament</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="helpcentre.html">Help Centre</a>
+      <div class="menu">
+         <a href="dashboard.html" id="dashboardLink">Dashboard</a>
+         <a href="#" id="tournamentLink">Tournament</a>
+         <a href="withdraw.html" id="withdrawLink">Withdraw</a>
+         <a href="help-center.html" id="helpCenterLink">Help Centre</a>
+      </div>
    </div>
 
-   <!-- Add Funds Form -->
+   <!-- Add Funds Container -->
    <div class="add-funds-container">
-      <h2>Add Funds</h2>
+      <h2>Add Funds to Your Account</h2>
       <form id="addFundsForm">
-         <input type="number" id="amountInput" placeholder="Enter Amount (min 20৳)" min="20" required>
-         <select id="paymentMethod" required>
+         <!-- Amount Input -->
+         <input type="number" class="input-field" id="fundsAmount" placeholder="Enter amount (min 20৳)" min="20" required />
+
+         <!-- Payment Method Selection -->
+         <select class="payment-method" id="paymentMethod" required>
             <option value="">Select Payment Method</option>
             <option value="bKash">bKash</option>
             <option value="Nagad">Nagad</option>
             <option value="Rocket">Rocket</option>
          </select>
-         <button type="button" id="payNowButton">Pay Now</button>
+
+         <!-- Pay Now Button -->
+         <button type="button" id="addFundsButton">Pay Now</button>
       </form>
 
       <!-- Send Money Info -->
-      <div id="sendMoneyInfo">
+      <div id="sendMoneyInfo" style="display: none;">
          <p>Send Money: <span id="paymentNumber">01798502666</span></p>
          <button class="copy-button" id="copyButton">Copy</button>
-         <p id="successMessage">Copied successfully!</p>
+         <p class="success-message" id="successMessage">Copied successfully!</p>
 
-         <!-- Transaction ID Input -->
-         <input type="text" id="transactionId" placeholder="Transaction ID / Sender Wallet Number" required>
+         <!-- Transaction ID / Sender Wallet Input -->
+         <input type="text" id="transactionIdInput" placeholder="Enter Transaction ID / Sender Wallet Number" required>
+
+         <!-- Confirm Button -->
          <button type="button" id="confirmTransaction">Confirm</button>
       </div>
    </div>
@@ -191,59 +243,74 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // Show the Send Money info and hide the form
-      document.getElementById("payNowButton").onclick = function() {
-         const amount = parseFloat(document.getElementById("amountInput").value);
-         const paymentMethod = document.getElementById("paymentMethod").value;
-
-         if (amount >= 20 && paymentMethod) {
-            document.getElementById("addFundsForm").style.display = "none";
-            document.getElementById("sendMoneyInfo").style.display = "block";
-         } else {
-            alert("Please enter a valid amount (min 20৳) and select a payment method.");
-         }
-      };
-
-      // Copy payment number to clipboard
-      document.getElementById("copyButton").onclick = function() {
-         const paymentNumber = document.getElementById("paymentNumber").innerText;
+      // Handle the Pay Now button click
+      document.getElementById("addFundsButton").onclick = function() {
+         const amount = parseFloat(document.getElementById("fundsAmount").value);
+                  const paymentNumber = document.getElementById("paymentNumber").innerText;
          navigator.clipboard.writeText(paymentNumber)
             .then(() => {
-               document.getElementById("successMessage").style.display = "block";
-               setTimeout(() => document.getElementById("successMessage").style.display = "none", 3000);
+               // Show success message
+               const successMessage = document.getElementById("successMessage");
+               successMessage.style.display = "block";
+
+               // Hide success message after 3 seconds
+               setTimeout(() => {
+                  successMessage.style.display = "none";
+               }, 3000);
             })
-            .catch(err => console.error("Error copying to clipboard: ", err));
+            .catch(err => {
+               console.error("Error copying to clipboard: ", err);
+            });
       };
 
-      // Confirm the transaction and send details to Telegram
+      // Handle Confirm Transaction Button
       document.getElementById("confirmTransaction").onclick = function() {
-         const transactionId = document.getElementById("transactionId").value;
-         const email = auth.currentUser.email;
-         const amount = document.getElementById("amountInput").value;
+         const transactionId = document.getElementById("transactionIdInput").value;
+         const email = auth.currentUser ? auth.currentUser.email : 'User not logged in';
+         const amount = parseFloat(document.getElementById("fundsAmount").value);
          const paymentMethod = document.getElementById("paymentMethod").value;
 
-         if (transactionId) {
-            const message = `User Email: ${email}\nAmount: ৳${amount}\nPayment Method: ${paymentMethod}\nTransaction ID / Wallet: ${transactionId}`;
-
-            // Send message to Telegram
-            const botToken = "7902145261:AAHY6gBHmMN_ubLJbnEpJCtnCd0HvUB71M0";
-            const chatId = "7174617845";
-            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-            fetch(telegramUrl)
-               .then(response => response.json())
-               .then(data => {
-                  if (data.ok) {
-                     alert("Transaction confirmed and details sent to admin.");
-                  } else {
-                     alert("Failed to send message to Telegram.");
-                  }
-               })
-               .catch(error => console.error("Error sending message to Telegram:", error));
-         } else {
-            alert("Please enter the Transaction ID / Wallet Number.");
+         if (!transactionId) {
+            alert("Please enter the transaction ID or sender wallet number.");
+            return;
          }
+
+         // Prepare the message to send to Telegram
+         const message = `
+            New Add Funds Request:
+            Email: ${email}
+            Amount: ${amount}৳
+            Payment Method: ${paymentMethod}
+            Transaction ID / Sender Wallet Number: ${transactionId}
+         `;
+
+         // Send the message to Telegram using the Bot API
+         const telegramBotToken = '7902145261:AAHY6gBHmMN_ubLJbnEpJCtnCd0HvUB71M0';
+         const chatId = '7174617845';
+
+         fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               chat_id: chatId,
+               text: message
+            })
+         })
+         .then(response => response.json())
+         .then(data => {
+            if (data.ok) {
+               alert("Funds request successfully confirmed and sent to Telegram!");
+            } else {
+               alert("Failed to send message to Telegram. Please try again.");
+            }
+         })
+         .catch(error => {
+            console.error("Error sending message to Telegram: ", error);
+            alert("An error occurred. Please try again later.");
+         });
       };
    </script>
 </body>
-</html>
+</html
