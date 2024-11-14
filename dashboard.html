@@ -117,65 +117,68 @@
          background: #d43c3c;
       }
 
-     /* Centered Verification Section */
+     /* Centered Verification Section Container */
 .verification-section {
-   background: #292d3e;
-   border-radius: 8px;
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-   width: 100%;
-   max-width: 400px;
-   padding: 20px;
+   background-color: #232733; /* Dark background for 1xbet theme */
+   border-radius: 10px;
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Softer shadow */
+   width: 90%;
+   max-width: 450px; /* Adjusted for larger width */
+   padding: 25px;
    margin: 20px auto;
+   text-align: center;
+   color: #ffffff;
+}
+
+/* Header for Verification Section */
+.verification-section h3 {
+   color: #1da1f2; /* Sky blue color for header */
+   font-size: 1.6rem;
+   margin-bottom: 20px;
+   font-weight: bold;
+}
+
+/* Large Input Box with Rounded Corners for UID */
+.verification-section input#freeFireUID {
+   width: 100%; /* Full width within the container */
+   padding: 15px; /* Increased padding for larger size */
+   margin: 10px 0;
+   border-radius: 10px;
+   border: 1px solid #1da1f2;
+   background-color: #2d3442;
+   color: #ffffff;
+   font-size: 1.1rem;
    text-align: center;
 }
 
-/* Header for the Verification Section */
-.verification-section h3 {
-   color: #00aaff;
-   margin-bottom: 20px;
-   font-weight: 600;
-}
-
-/* Unique Style for UID Input */
-.verification-section input#freeFireUID {
-   width: 90%;
-   padding: 12px;
-   margin: 10px 0;
-   border-radius: 8px;
-   border: 1px solid #1a75ff;
-   background-color: #1c1e29;
-   color: #ffffff;
-   font-size: 1rem;
-}
-
-/* Unique Style for File Upload */
+/* File Upload with Matching Style */
 .verification-section input#screenshotUpload {
-   width: 90%;
-   padding: 8px;
+   width: 100%; /* Full width */
+   padding: 10px;
    margin: 10px 0;
-   border-radius: 8px;
-   background-color: #1c1e29;
+   border-radius: 10px;
+   background-color: #2d3442;
    color: #ffffff;
    cursor: pointer;
-   font-size: 0.9rem;
+   font-size: 1rem;
 }
 
 /* Verify Button */
 .verification-section .verify-button {
-   background-color: #007bff;
+   background-color: #1da1f2; /* Sky blue to match theme */
    color: white;
    border: none;
-   padding: 10px 20px;
+   padding: 12px 25px;
    margin-top: 15px;
-   border-radius: 8px;
+   border-radius: 10px;
    cursor: pointer;
-   transition: background 0.3s;
+   transition: background 0.3s ease;
    font-weight: bold;
-   font-size: 1rem;
+   font-size: 1.1rem;
 }
 
 .verification-section .verify-button:hover {
-   background-color: #0056b3;
+   background-color: #1488c5; /* Darker blue on hover */
 }
 
 
