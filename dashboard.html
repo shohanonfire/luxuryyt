@@ -21,18 +21,7 @@
          color: #ffffff;
       }
 
-      /* Navigation Bar Styles */
-      .navbar {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         background-color: #292d3e;
-         padding: 15px 30px;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         margin-top: 10px;
-      }
-
-      /* Logo Container with fixed width and height */
+      /* Logo Container */
       .logo-container {
          text-align: center;
          margin-top: 20px;
@@ -44,21 +33,35 @@
          object-fit: contain;
       }
 
-      /* Navigation Menu Styles */
+      /* Navigation Bar Styles */
+      .navbar {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         background-color: #292d3e;
+         padding: 15px 30px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+         margin-top: 10px;
+      }
+
       .navbar .menu {
          display: flex;
          gap: 20px;
+         justify-content: space-between;
+         width: 100%; /* Take full width */
       }
 
       .navbar .menu a {
          color: #ffffff;
          text-decoration: none;
          font-size: 1rem;
-         padding: 10px;
+         padding: 10px 15px;
          border-radius: 5px;
          font-weight: bold;
          background-color: #000;
          transition: background 0.3s;
+         width: 100%;  /* Make navigation links equally sized */
+         text-align: center;
       }
 
       .navbar .menu a:hover {
@@ -132,6 +135,16 @@
             height: 120px;
          }
 
+         .navbar .menu {
+            flex-direction: column; /* Stack navigation links vertically */
+            gap: 10px;  /* Adjust spacing for mobile */
+         }
+
+         .navbar .menu a {
+            width: auto;  /* Let links take their natural width */
+            padding: 12px 20px;
+         }
+
          .dashboard-container {
             width: 90%;
             max-width: 350px;  /* Slightly smaller dashboard on mobile */
@@ -142,6 +155,11 @@
       @media (min-width: 769px) {
          .dashboard-container {
             max-width: 500px;  /* Larger dashboard width on desktop */
+         }
+
+         .navbar .menu {
+            justify-content: space-between;
+            width: auto;
          }
       }
    </style>
