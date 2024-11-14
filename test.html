@@ -18,49 +18,52 @@
          align-items: center;
          justify-content: center;
          min-height: 100vh;
-         background: #f5f5f5;
+         background: linear-gradient(135deg, #2a5298, #1e3c72);
          color: #333;
       }
 
       .container {
          max-width: 400px;
          width: 100%;
-         padding: 2rem;
-         background: #fff;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-         border-radius: 8px;
+         padding: 1.5rem;
+         background: #1e2d49;
+         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+         border-radius: 10px;
          text-align: center;
+         color: #fff;
       }
 
       .tab-buttons {
          display: flex;
-         justify-content: space-between;
+         justify-content: space-around;
          margin-bottom: 1.5rem;
+         border-bottom: 1px solid #444;
       }
 
       .tab-buttons button {
-         width: 48%;
+         width: 50%;
          padding: 10px;
          font-size: 1rem;
          border: none;
-         border-bottom: 2px solid transparent;
-         background-color: #f9f9f9;
+         background: none;
+         color: #aaa;
          cursor: pointer;
+         transition: color 0.3s, border-bottom 0.3s;
       }
 
       .tab-buttons .active {
-         border-bottom: 2px solid #4CAF50;
+         color: #fff;
          font-weight: bold;
+         border-bottom: 2px solid #f39c12;
       }
 
       h2 {
          margin-bottom: 1rem;
          font-size: 1.5rem;
-         color: #555;
+         color: #f39c12;
       }
 
       form {
-         margin-bottom: 1rem;
          display: none;
       }
 
@@ -70,40 +73,50 @@
 
       input[type="email"], input[type="password"] {
          width: 100%;
-         padding: 10px;
+         padding: 12px;
          margin: 0.5rem 0;
-         border: 1px solid #ddd;
+         border: none;
          border-radius: 4px;
+         background: #333;
+         color: #eee;
+         outline: none;
+         font-size: 1rem;
       }
 
       button.primary {
          width: 100%;
          padding: 10px;
-         border: none;
-         background-color: #4CAF50;
-         color: white;
+         background-color: #f39c12;
+         color: #fff;
          font-size: 1rem;
          border-radius: 4px;
+         border: none;
          cursor: pointer;
+         transition: background-color 0.3s;
          margin-top: 0.5rem;
       }
 
       button.primary:hover {
-         background-color: #45a049;
+         background-color: #e67e22;
       }
 
       .google-btn {
-         background-color: #4285f4;
+         background-color: #db4437;
          display: flex;
          align-items: center;
          justify-content: center;
-         gap: 5px;
+         gap: 10px;
          color: white;
          font-size: 1rem;
          padding: 10px;
          margin-top: 1rem;
          border-radius: 4px;
          cursor: pointer;
+         transition: background-color 0.3s;
+      }
+
+      .google-btn:hover {
+         background-color: #c23627;
       }
 
       .google-btn img {
@@ -111,14 +124,14 @@
       }
 
       .forgot-password {
-         color: #4285f4;
+         color: #bbb;
          cursor: pointer;
          margin-top: 0.5rem;
-         display: block;
          font-size: 0.9rem;
       }
 
       .forgot-password:hover {
+         color: #f39c12;
          text-decoration: underline;
       }
 
@@ -130,9 +143,10 @@
          left: 0;
          width: 100%;
          height: 100%;
-         background: rgba(0, 0, 0, 0.5);
+         background: rgba(0, 0, 0, 0.7);
          justify-content: center;
          align-items: center;
+         z-index: 10;
       }
 
       .modal.active {
@@ -140,21 +154,23 @@
       }
 
       .modal-content {
-         background: white;
+         background: #1e2d49;
          padding: 2rem;
          border-radius: 8px;
          max-width: 400px;
          width: 100%;
          text-align: center;
+         color: #fff;
       }
 
       .close-btn {
-         background: #4CAF50;
+         background: #f39c12;
          color: white;
          border: none;
          padding: 10px;
          cursor: pointer;
          border-radius: 4px;
+         margin-top: 1rem;
       }
    </style>
 </head>
@@ -258,7 +274,7 @@
       function forgotPassword() {
          const email = document.getElementById("resetEmail").value;
          auth.sendPasswordResetEmail(email)
-            .then(() => alert("Reset link sent."))
+            .then(() => alert("Reset link sent to your email."))
             .catch(error => alert("Error: " + error.message));
       }
    </script>
