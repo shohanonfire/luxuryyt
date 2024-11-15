@@ -21,7 +21,6 @@
          color: #ffffff;
       }
 
-      /* Logo Container */
       .logo-container {
          text-align: center;
          margin-top: 20px;
@@ -33,7 +32,6 @@
          object-fit: contain;
       }
 
-      /* Navigation Bar Styles */
       .navbar {
          display: flex;
          justify-content: space-around;
@@ -65,7 +63,6 @@
          background-color: #1a75ff;
       }
 
-      /* Dashboard Container */
       .dashboard-container {
          background: #292d3e;
          border-radius: 8px;
@@ -117,7 +114,6 @@
          background: #d43c3c;
       }
 
-      /* Verification Section Styles */
       .verificationSection {
          background-color: #232733;
          border-radius: 10px;
@@ -173,7 +169,6 @@
          font-size: 1.1rem;
       }
 
-      /* Mobile and Tablet responsive styles */
       @media (max-width: 768px) {
          .logo-container {
             margin-top: 15px;
@@ -195,7 +190,6 @@
          }
       }
 
-      /* Desktop styles for larger screens */
       @media (min-width: 769px) {
          .dashboard-container {
             max-width: 500px;
@@ -204,12 +198,10 @@
    </style>
 </head>
 <body>
-   <!-- Logo Container (Placed Above Navbar) -->
    <div class="logo-container">
       <img src="https://i.imgur.com/7nQE4AA.png" alt="Aura E-sports" class="logo"/>
    </div>
 
-   <!-- Navigation Bar -->
    <div class="navbar">
       <div class="menu">
          <a href="addfunds.html" id="addFundsLink">Add Funds</a>
@@ -219,7 +211,6 @@
       </div>
    </div>
 
-   <!-- Dashboard Container -->
    <div class="dashboard-container">
       <h2>Welcome to Your Dashboard</h2>
       <p>Your Balance: ৳<span id="userBalanceDisplay">0</span></p>
@@ -227,7 +218,6 @@
       <button id="logoutButton">Logout</button>
    </div>
 
-   <!-- Screenshot Upload and FreeFire UID Input -->
    <div class="verificationSection" id="verificationSection" style="display: none;">
       <h3>Upload Screenshot and Verify FreeFire UID</h3>
       <input type="text" id="freeFireUID" placeholder="Enter FreeFire UID" required>
@@ -235,97 +225,117 @@
       <button class="verifyButton" id="verifyButton">Verify</button>
    </div>
 
-   <!-- Firebase SDKs and JavaScript -->
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
-<script>
-   const firebaseConfig = {
-      apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
-      authDomain: "sphere-tournament.firebaseapp.com",
-      projectId: "sphere-tournament",
-      storageBucket: "sphere-tournament.firebasestorage.app",
-      messagingSenderId: "49933225091",
-      appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
-      measurementId: "G-EPKCPTL47V"
-   };
+   <script>
+      const firebaseConfig = {
+         apiKey: "AIzaSyDr6dc3a-LUQwvtvnrb006fjhhaXlZTT1k",
+         authDomain: "sphere-tournament.firebaseapp.com",
+         projectId: "sphere-tournament",
+         storageBucket: "sphere-tournament.firebasestorage.app",
+         messagingSenderId: "49933225091",
+         appId: "1:49933225091:web:b1f3fe657491c94b2f9fb6",
+         measurementId: "G-EPKCPTL47V"
+      };
 
-   firebase.initializeApp(firebaseConfig);
-   const auth = firebase.auth();
-   const db = firebase.firestore();
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
 
-   // Display user's balance
-   function displayBalance() {
-      auth.onAuthStateChanged(user => {
-         if (user) {
-            db.collection("users").doc(user.uid).get()
-               .then(doc => {
+      function displayBalance() {
+         auth.onAuthStateChanged(user => {
+            if (user) {
+               db.collection("users").doc(user.uid).get()
+                  .then(doc => {
+                     if (doc.exists) {
+                        const balance = doc.data().balance || 0;
+                        document.getElementById("userBalanceDisplay").innerText = balance;
+                        const verified = doc.data().verified || false;
+
+                        if (!verified) {
+                           document.getElementById("verificationSection").style.display = "block";
+                           document.getElementById("tournamentLink").onclick = function(e) {
+                              e.preventDefault();
+                              alert("Please complete verification to join tournaments.");
+                           };
+                        }
+                     } else {
+                        alert("No balance data found.");
+                     }
+                  })
+                  .catch(error => console.error("Error fetching balance:", error));
+            } else {
+               window.location.href = "login.html";
+            }
+         });
+      }
+
+      document.getElementById("logoutButton").onclick = function() {
+         auth.signOut().then(() => {
+            window.location.href = "login.html";
+         }).catch(error => console.error("Logout Error:", error));
+      };
+
+      document.getElementById("purchaseButton").onclick = function() {
+         auth.onAuthStateChanged(user => {
+            if (user) {
+               db.collection("users").doc(user.uid).get().then(doc => {
                   if (doc.exists) {
-                     const balance = doc.data().balance || 0;
-                     document.getElementById("userBalanceDisplay").innerText = balance;
-                     const verified = doc.data().verified || false;
-
-                     // Show or hide verification section based on verification status
-                     if (!verified) {
-                        document.getElementById("verificationSection").style.display = "block";
-                        document.getElementById("tournamentLink").onclick = function(e) {
-                           e.preventDefault();
-                           alert("Please complete verification to join tournaments.");
-                        };
+                     let balance = doc.data().balance || 0;
+                     if (balance >= 20) {
+                        balance -= 20;
+                        db.collection("users").doc(user.uid).update({
+                           balance: balance
+                        })
+                        .then(() => {
+                           document.getElementById("userBalanceDisplay").innerText = balance;
+                           alert("Purchase successful! 20 tk has been deducted.");
+                        })
+                        .catch(error => console.error("Error updating balance:", error));
+                     } else {
+                        alert("Insufficient balance for purchase.");
                      }
                   } else {
-                     alert("No balance data found.");
+                     alert("Balance data not found.");
                   }
-               })
-               .catch(error => console.error("Error fetching balance:", error));
-         } else {
-            window.location.href = "login.html";
-         }
-      });
-   }
-
-   // Verify UID and Screenshot, and send data to Telegram
-   document.getElementById("verifyButton").onclick = function() {
-      const freeFireUID = document.getElementById("freeFireUID").value;
-      const screenshot = document.getElementById("screenshotUpload").files[0];
-
-      auth.onAuthStateChanged(user => {
-         if (user) {
-            if (!freeFireUID || !screenshot) {
-               alert("Please enter your FreeFire UID and upload a screenshot.");
-               return;
+               }).catch(error => console.error("Error fetching balance for purchase:", error));
+            } else {
+               alert("Please log in to make a purchase.");
             }
+         });
+      };
 
-            const formData = new FormData();
-            formData.append("chat_id", "7174617845");
-            formData.append("caption", `FreeFire UID: ${freeFireUID}\nUser Email: ${user.email}`);
-            formData.append("photo", screenshot);
+      document.getElementById("verifyButton").onclick = function() {
+         const freeFireUID = document.getElementById("freeFireUID").value;
+         const screenshot = document.getElementById("screenshotUpload").files[0];
 
-            fetch(`https://api.telegram.org/bot7908043005:AAEQb9H0MWv323vbJ-0ekDwi2PA5TxjFXcc/sendPhoto`, {
-               method: "POST",
-               body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-               if (data.ok) {
-                  alert("Verification request sent. Please wait for admin approval.");
-                  db.collection("users").doc(user.uid).set({
-                     freeFireUID: freeFireUID,
-                     verified: false
-                  }, { merge: true });
-               } else {
-                  alert("Failed to send verification request. Please try again.");
-               }
-            })
-            .catch(error => console.error("Error:", error));
-         } else {
-            alert("Please log in to verify.");
+         if (!freeFireUID || !screenshot) {
+            alert("Please enter your FreeFire UID and upload a screenshot.");
+            return;
          }
-      });
-   };
 
-   displayBalance();
-</script>
+         const formData = new FormData();
+         formData.append("chat_id", "7174617845");
+         formData.append("document", screenshot);
+         formData.append("caption", `FreeFire UID: ${freeFireUID}`);
+
+         fetch(`https://api.telegram.org/bot7908043005:AAEQb9H0MWv323vbJ-0ekDwi2PA5TxjFXcc/sendDocument`, {
+            method: "POST",
+            body: formData
+         })
+         .then(response => {
+            if (response.ok) {
+               alert("Verification data sent successfully.");
+            } else {
+               alert("Failed to send verification data. Please try again.");
+            }
+         })
+         .catch(error => console.error("Error sending verification data:", error));
+      };
+
+      displayBalance();
+   </script>
 </body>
 </html>
