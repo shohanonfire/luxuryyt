@@ -12,6 +12,12 @@
             box-sizing: border-box;
         }
 
+        .content {
+    opacity: 1;
+    transform: none;
+}
+
+
         body {
             font-family: Arial, sans-serif;
             background-color: #fa7f05;
@@ -185,7 +191,7 @@
     </style>
 </head>
 <body>
-    <header class="header content">
+    <header class="header content show">
         <div class="logo">
             <img src="https://imgur.com/jPXp4tt.png" alt="YoutSubscriber Logo">
         </div>
@@ -193,12 +199,12 @@
         <p> PURCHASE PREMIUM MEMBERSHIP FOR YOUTUBE FROM US IN BD</p>
     </header>
 
-    <section class="offer content">
+    <section class="offer content show">
         <p>HELLO EVERYONE, with our new rigs buy YouTube subscriber membership tension free from us in Bangladesh. We are here to give you YouTube subscribers membership in reasonable price. So why are you waiting? Buy subscriber membership and grow your YouTube channel.</p>
         <h2>BOOK YOUR FAVOURITE MEMBERSHIP NOW</h2>
     </section>
 
-    <section class="pricing content">
+    <section class="pricing content show">
         <table>
             <thead>
                 <tr>
@@ -226,7 +232,7 @@
         </div>
     </section>
 
-    <footer class="footer content">
+    <footer class="footer content show">
         <p></p>
         <div class="payment">
             <img src="https://imgur.com/HoTrMsT.png" alt="bKash Logo">
@@ -312,6 +318,14 @@
             console.error("Error validating activation code:", error);
             return false;
         }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+    const contents = document.querySelectorAll(".content");
+    contents.forEach(content => {
+        content.classList.add("show");
+    });
+});
     }
 
     async function activate() {
