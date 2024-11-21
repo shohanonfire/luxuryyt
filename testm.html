@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .payment-logo img {
+            width: 80px;
+            margin: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .payment-logo img:hover {
+            transform: scale(1.1);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activate Membership</h1>
+        <div class="form-group">
+            <label for="activationCode">Activation Code</label>
+            <input type="text" id="activationCode" placeholder="Enter Activation Code">
+        </div>
+        <div class="form-group">
+            <label for="membershipType">Membership Type</label>
+            <select id="membershipType">
+                <option value="" disabled selected>Select Membership</option>
+                <option value="Gold">Gold Membership (৳10)</option>
+                <option value="Platinum">Platinum Membership (৳20)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="paymentMethod">Payment Method</label>
+            <select id="paymentMethod">
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="bKash" data-img="https://imgur.com/HoTrMsT.png">bKash</option>
+                <option value="Nagad" data-img="https://imgur.com/A8sT2AP.png">Nagad</option>
+            </select>
+        </div>
+        <div class="payment-logo">
+            <img src="https://imgur.com/HoTrMsT.png" alt="bKash" onclick="selectPayment('bKash')">
+            <img src="https://imgur.com/A8sT2AP.png" alt="Nagad" onclick="selectPayment('Nagad')">
+        </div>
+        <button onclick="activate()">Activate</button>
+    </div>
+
+<script type="module">
+    // Import Firebase libraries
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+
+    // Firebase initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVvEJMzlys6TgdZ-5GprlEXbfQIOp2xFs",
+            authDomain: "membership-e2b69.firebaseapp.com",
+            projectId: "membership-e2b69",
+            storageBucket: "membership-e2b69.firebasestorage.app",
+            messagingSenderId: "822292133227",
+            appId: "1:822292133227:web:5751e00c24dbe3ef8fc82e",
+            measurementId: "G-9D0227MGMH"
+        };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Function to select payment method via logo click
+    function selectPayment(method) {
+        document.getElementById('paymentMethod').value = method;
+    }
+
+    // Validate and activate the code
+    async function validateActivationCode(code) {
+        const docRef = doc(db, "activationCodes", code);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists() && !docSnap.data().used) {
+            // Mark code as used
+            await updateDoc(docRef, { used: true });
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async function activate() {
+        const activationCode = document.getElementById('activationCode').value;
+        const membershipType = document.getElementById('membershipType').value;
+        const paymentMethod = document.getElementById('paymentMethod').value;
+
+        if (!activationCode || !membershipType || !paymentMethod) {
+            alert("Please fill out all fields!");
+            return;
+        }
+
+        if (await validateActivationCode(activationCode)) {
+            alert(`Activation successful for ${membershipType} with ${paymentMethod}!`);
+
+            // Redirect based on membership type and payment method
+            if (membershipType === "Gold" && paymentMethod === "bKash") {
+                window.location.href = 'https://example.com/gold-bkash.html';
+            } else if (membershipType === "Gold" && paymentMethod === "Nagad") {
+                window.location.href = 'https://example.com/gold-nagad.html';
+            } else if (membershipType === "Platinum" && paymentMethod === "bKash") {
+                window.location.href = 'https://example.com/platinum-bkash.html';
+            } else if (membershipType === "Platinum" && paymentMethod === "Nagad") {
+                window.location.href = 'https://example.com/platinum-nagad.html';
+            }
+        } else {
+            alert("Invalid or already used activation code!");
+        }
+    }
+</script>
+</body>
+</html>
