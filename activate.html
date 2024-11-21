@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .activation-container {
+            background-color: #222;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 450px;
+            box-sizing: border-box;
+            color: #fff;
+        }
+
+        .form-header {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00bfff;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-group input,
+        .input-group select {
+            border: 1px solid #00bfff;
+            border-radius: 5px;
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #0085cc;
+            outline: none;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #00bfff;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #0085cc;
+        }
+
+        .pay-button:active {
+            background-color: #006b8d;
+        }
+
+        .terms {
+            font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        .terms a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="activation-container">
+    <div class="form-header">Activate Your Membership</div>
+
+    <form id="activationForm">
+        <!-- YouTube Handle -->
+        <div class="input-group">
+            <label for="youtubeHandle">YouTube Handle</label>
+            <input type="text" id="youtubeHandle" placeholder="Enter YouTube Handle" required>
+        </div>
+
+        <!-- Membership Type -->
+        <div class="input-group">
+            <label for="membershipType">Select Membership</label>
+            <select id="membershipType" required>
+                <option value="Gold Membership">Gold Membership</option>
+                <option value="Platinum Membership">Platinum Membership</option>
+            </select>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="input-group">
+            <label for="paymentMethod">Payment Method</label>
+            <select id="paymentMethod" required>
+                <option value="Card">Card</option>
+                <!-- Add other payment methods as needed -->
+            </select>
+        </div>
+
+        <!-- Pay Button -->
+        <button type="submit" class="pay-button">Pay Now</button>
+        
+        <!-- Terms of Service -->
+        <p class="terms">
+            By clicking "Pay Now", you agree to our <a href="#">Terms of Service</a>.
+        </p>
+    </form>
+</div>
+
+<script>
+    document.getElementById('activationForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the form from submitting
+        
+        // Get form data
+        const youtubeHandle = document.getElementById('youtubeHandle').value;
+        const membershipType = document.getElementById('membershipType').value;
+        const paymentMethod = document.getElementById('paymentMethod').value;
+
+        // Check if all fields are filled
+        if (!youtubeHandle || !membershipType || !paymentMethod) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        // Redirect to payID page (for example purposes, you could handle further logic)
+        window.location.href = "youtubemembership.html?payID=1";
+    });
+</script>
+
+</body>
+</html>
