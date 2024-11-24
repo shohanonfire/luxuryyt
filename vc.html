@@ -77,7 +77,6 @@
       display: none;
     }
 
-    /* Optional - Add loading animation styles if necessary */
     .loading {
       display: none;
       color: #ffdd57;
@@ -116,7 +115,7 @@
 
     // Form submission handler
     document.getElementById('activationForm').addEventListener('submit', async function(e) {
-      e.preventDefault(); // Prevent the default form submission behavior
+      e.preventDefault();
 
       const codeInput = document.getElementById('activationCode').value;
       const errorMessage = document.getElementById('errorMessage');
@@ -129,30 +128,28 @@
       successMessage.style.display = "none";
 
       try {
-        // Query Firestore for the activation code in the 'codes' document
-        const docRef = db.collection("activationCodes").doc("codes"); // Get the specific document 'codes'
-        const doc = await docRef.get();
+        // Query Firestore for the activation code
+        const querySnapshot = await db.collection("activationCodes")
+          .where("code", "==", codeInput) // Match the code entered by the user
+          .where("used", "==", false) // Ensure the code is not already used
+          .limit(1) // Limit to one result
+          .get();
 
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.code === codeInput && !data.used) {
-            // If the code matches and is not used, update the document to mark it as used
-            await docRef.update({
-              used: true
-            });
-
-            // Show success message
-            successMessage.style.display = "block";
-            setTimeout(() => {
-              window.location.href = "https://your-redirect-url.com"; // Replace with your desired URL
-            }, 2000); // Redirect after 2 seconds
-          } else {
-            // If the code doesn't match or is already used, show the error message
-            errorMessage.style.display = "block";
-          }
-        } else {
-          // If the 'codes' document doesn't exist
+        if (querySnapshot.empty) {
+          // If no code matches or it's already used, show the error message
           errorMessage.style.display = "block";
+        } else {
+          // If the code is valid, update the document to mark it as used
+          const doc = querySnapshot.docs[0];
+          await db.collection("activationCodes").doc(doc.id).update({
+            used: true // Mark the code as used
+          });
+
+          // Show success message
+          successMessage.style.display = "block";
+          setTimeout(() => {
+            window.location.href = "https://your-redirect-url.com"; // Replace with your desired URL
+          }, 2000); // Redirect after 2 seconds
         }
       } catch (error) {
         console.error("Error fetching or updating activation code:", error);
