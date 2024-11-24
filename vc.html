@@ -109,7 +109,8 @@
     // Upload the generated code to Firestore
     async function uploadCodeToFirestore(customCode) {
       try {
-        await firebase.firestore().collection("activationCodes").doc(customCode).set({
+        // Add the generated code to Firestore
+        await db.collection("activationCodes").doc(customCode).set({
           code: customCode,
           used: false
         });
