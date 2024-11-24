@@ -53,8 +53,8 @@
     // Button to Generate Random Code
     document.getElementById('generateCode').addEventListener('click', () => {
       const randomCode = generateRandomCode();
-      document.getElementById('generatedCode').textContent = randomCode;
-      document.getElementById('customCode').value = randomCode;
+      document.getElementById('generatedCode').textContent = randomCode;  // Update the displayed code
+      document.getElementById('customCode').value = randomCode;  // Update the input field
     });
 
     // Form Submission to Upload Code
