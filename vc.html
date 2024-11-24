@@ -38,20 +38,22 @@
 
     // Function to upload code to Firestore
     async function uploadCodeToFirestore(customCode) {
-      try {
-        // Upload the code to Firestore as a document with the code as document ID
-        await setDoc(doc(db, "activationCodes", customCode), {
-          code: customCode,
-          used: false
-        });
-        console.log("Code successfully uploaded:", customCode);
-        document.getElementById("successMessage").style.display = "block";
-        document.getElementById("errorMessage").style.display = "none";
-      } catch (error) {
-        console.error("Error uploading code:", error);
-        document.getElementById("successMessage").style.display = "none";
-        document.getElementById("errorMessage").style.display = "block";
-      }
+  try {
+    // Upload the code to Firestore as a document with the code as document ID
+    await setDoc(doc(db, "activationCodes", customCode), {
+      code: customCode,
+      used: false
+    });
+    console.log("Code successfully uploaded:", customCode);
+    document.getElementById("successMessage").style.display = "block";
+    document.getElementById("errorMessage").style.display = "none";
+  } catch (error) {
+    // Enhanced error logging
+    console.error("Error uploading code:", error.message);
+    console.log("Error details:", error);
+    document.getElementById("successMessage").style.display = "none";
+    document.getElementById("errorMessage").style.display = "block";
+  }
     }
 
     // Event Listener for Generate Code Button
