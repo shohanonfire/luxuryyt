@@ -123,13 +123,13 @@
     // Prevent page refresh on form submission
     activationForm.addEventListener('submit', async function(e) {
       e.preventDefault();  // Prevent the form from submitting and refreshing the page
-
       const codeInput = activationCodeInput.value;
 
       // Show loading indicator and hide previous messages
       loadingMessage.style.display = "block";
       errorMessage.style.display = "none";
       successMessage.style.display = "none";
+      console.log('Form submission triggered for code:', codeInput);
 
       try {
         // Query Firestore for the activation code
@@ -141,10 +141,12 @@
 
         if (querySnapshot.empty) {
           // If no code matches or it's already used, show the error message
+          console.log('No matching or valid code found');
           errorMessage.style.display = "block";
         } else {
           // If the code is valid, update the document to mark it as used
           const doc = querySnapshot.docs[0];
+          console.log('Code found, marking as used:', doc.id);
           await db.collection("activationCodes").doc(doc.id).update({
             used: true // Mark the code as used
           });
