@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generate and Upload Activation Code</title>
+  <title>Activation Code</title>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
+</head>
+<body>
+  <h1>Enter Activation Code</h1>
+  <form id="activationForm">
+    <input type="text" id="activationCode" placeholder="Enter Activation Code" required>
+    <button type="submit">Proceed</button>
+  </form>
+  <p id="errorMessage" style="color:red; display:none;">Invalid activation code. Please try again.</p>
 
-  <!-- Firebase SDK v9+ -->
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
-
+  <script>
     // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBGfmx5l0_8pH4jqYG0XCYLkIJ2UQn8r0k",
@@ -23,72 +29,32 @@
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore(app);
 
-    // Generate Random Code Function
-    function generateRandomCode(length = 8) {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let code = '';
-      for (let i = 0; i < length; i++) {
-        code += characters.charAt(Math.floor(Math.random() * characters.length));
-      }
-      return code;
-    }
+    // Form submission handler
+    document.getElementById('activationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-    // Function to upload code to Firestore
-    async function uploadCodeToFirestore(customCode) {
+      const codeInput = document.getElementById('activationCode').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
       try {
-        // Upload the code to Firestore as a document with the code as document ID
-        await setDoc(doc(db, "activationCodes", customCode), {
-          code: customCode,
-          used: false
-        });
-        console.log("Code successfully uploaded:", customCode);
-        document.getElementById("successMessage").style.display = "block";
-        document.getElementById("errorMessage").style.display = "none";
+        // Query Firestore for the activation code
+        const querySnapshot = await db.collection("activationCodes").where("code", "==", codeInput).get();
+
+        if (querySnapshot.empty) {
+          // If no code matches, show the error message
+          errorMessage.style.display = "block";
+        } else {
+          // If the code is valid, redirect the user
+          window.location.href = "https://your-redirect-url.com"; // Replace with your desired URL
+        }
       } catch (error) {
-        console.error("Error uploading code:", error);
-        document.getElementById("successMessage").style.display = "none";
-        document.getElementById("errorMessage").style.display = "block";
+        console.error("Error fetching activation code:", error);
+        errorMessage.style.display = "block";
       }
-    }
-
-    // Event Listener for Generate Code Button
-    document.getElementById("generateCode").addEventListener("click", () => {
-      const randomCode = generateRandomCode();
-      document.getElementById("generatedCode").textContent = randomCode;
-      document.getElementById("customCode").value = randomCode;
-    });
-
-    // Event Listener for Form Submit
-    document.getElementById("codeForm").addEventListener("submit", function (e) {
-      e.preventDefault();  // Prevent form from refreshing the page
-      const customCode = document.getElementById("customCode").value.trim();
-
-      if (!customCode) {
-        alert("Please generate or enter a code before uploading!");
-        return;
-      }
-
-      uploadCodeToFirestore(customCode);
     });
   </script>
-</head>
-<body>
-  <h1>Generate and Upload Activation Code</h1>
-  
-  <form id="codeForm">
-    <label for="customCode">Enter Custom Code (Optional):</label>
-    <input type="text" id="customCode" placeholder="Enter your code">
-    <br><br>
-    <button type="button" id="generateCode">Generate Random Code</button>
-    <br><br>
-    <p><b>Generated Code:</b> <span id="generatedCode">None</span></p>
-    <button type="submit">Upload to Firestore</button>
-  </form>
-
-  <p id="successMessage" style="color:green; display:none;">Code successfully uploaded!</p>
-  <p id="errorMessage" style="color:red; display:none;">Error uploading code. Please try again.</p>
 </body>
 </html>
