@@ -59,7 +59,7 @@
 
     // Form Submission to Upload Code
     document.getElementById('codeForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+      e.preventDefault();  // Prevent the form from submitting and refreshing the page
 
       const customCode = document.getElementById('customCode').value.trim();
       const successMessage = document.getElementById('successMessage');
