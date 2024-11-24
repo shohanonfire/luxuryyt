@@ -88,7 +88,7 @@
   <h1>Enter Activation Code</h1>
 
   <div class="form-container">
-    <form id="activationForm">
+    <form id="activationForm" onsubmit="return false;">
       <input type="text" id="activationCode" placeholder="Enter Activation Code" required>
       <button type="submit">Proceed</button>
     </form>
@@ -122,6 +122,8 @@
 
     // Prevent page refresh on form submission
     activationForm.addEventListener('submit', async function(e) {
+      // e.preventDefault() should stop form submission if it's correctly triggered
+      console.log('Form submit triggered');
       e.preventDefault();  // Prevent the form from submitting and refreshing the page
 
       const codeInput = activationCodeInput.value;
