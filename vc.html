@@ -116,7 +116,7 @@
 
     // Form submission handler
     document.getElementById('activationForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent the default form submission behavior
 
       const codeInput = document.getElementById('activationCode').value;
       const errorMessage = document.getElementById('errorMessage');
@@ -144,7 +144,7 @@
             // Show success message
             successMessage.style.display = "block";
             setTimeout(() => {
-              window.location.href = "https://youtubemembership.vercel.app"; // Replace with your desired URL
+              window.location.href = "https://your-redirect-url.com"; // Replace with your desired URL
             }, 2000); // Redirect after 2 seconds
           } else {
             // If the code doesn't match or is already used, show the error message
