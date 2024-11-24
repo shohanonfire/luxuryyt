@@ -113,16 +113,20 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore(app);
 
-    // Form submission handler
-    document.getElementById('activationForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+    // Get references to DOM elements
+    const activationForm = document.getElementById('activationForm');
+    const activationCodeInput = document.getElementById('activationCode');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const loadingMessage = document.getElementById('loadingMessage');
 
-      const codeInput = document.getElementById('activationCode').value;
-      const errorMessage = document.getElementById('errorMessage');
-      const successMessage = document.getElementById('successMessage');
-      const loadingMessage = document.getElementById('loadingMessage');
-      
-      // Show loading indicator
+    // Prevent page refresh on form submission
+    activationForm.addEventListener('submit', async function(e) {
+      e.preventDefault();  // Prevent the form from submitting and refreshing the page
+
+      const codeInput = activationCodeInput.value;
+
+      // Show loading indicator and hide previous messages
       loadingMessage.style.display = "block";
       errorMessage.style.display = "none";
       successMessage.style.display = "none";
@@ -145,7 +149,7 @@
             used: true // Mark the code as used
           });
 
-          // Show success message
+          // Show success message and redirect after a delay
           successMessage.style.display = "block";
           setTimeout(() => {
             window.location.href = "https://your-redirect-url.com"; // Replace with your desired URL
