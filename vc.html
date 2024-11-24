@@ -3,84 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generate Activation Code</title>
+  <title>Generate and Upload Activation Code</title>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
+  <!-- Firebase SDK v9+ -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-    }
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .generated-code-container {
-      margin-top: 20px;
-    }
-    .generated-code {
-      font-size: 18px;
-      font-weight: bold;
-      display: inline-block;
-      margin-right: 10px;
-    }
-    #copyBtn {
-      padding: 8px 15px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    #copyBtn:hover {
-      background-color: #0b7dda;
-    }
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Generate and Upload Activation Code</h1>
-
-  <!-- Button to generate and upload code -->
-  <button id="generateCodeBtn">Generate Code</button>
-
-  <!-- Display generated code and copy button -->
-  <div class="generated-code-container" id="generatedCodeContainer" style="display: none;">
-    <span id="generatedCode" class="generated-code"></span>
-    <button id="copyBtn">Copy</button>
-  </div>
-
-  <!-- Popup for success or error messages -->
-  <div id="popup"></div>
-
-  <script>
     // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBGfmx5l0_8pH4jqYG0XCYLkIJ2UQn8r0k",
@@ -93,10 +23,10 @@
     };
 
     // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    // Generate random code function
+    // Generate Random Code Function
     function generateRandomCode(length = 8) {
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let code = '';
@@ -106,51 +36,59 @@
       return code;
     }
 
-    // Upload the generated code to Firestore
+    // Function to upload code to Firestore
     async function uploadCodeToFirestore(customCode) {
       try {
-        // Add the generated code to Firestore
-        await db.collection("activationCodes").doc(customCode).set({
+        // Upload the code to Firestore as a document with the code as document ID
+        await setDoc(doc(db, "activationCodes", customCode), {
           code: customCode,
           used: false
         });
-        showPopup("Success! Code uploaded successfully.", "success");
+        console.log("Code successfully uploaded:", customCode);
+        document.getElementById("successMessage").style.display = "block";
+        document.getElementById("errorMessage").style.display = "none";
       } catch (error) {
-        showPopup("Error uploading code. Please try again.", "error");
+        console.error("Error uploading code:", error);
+        document.getElementById("successMessage").style.display = "none";
+        document.getElementById("errorMessage").style.display = "block";
       }
     }
 
-    // Display the popup message
-    function showPopup(message, type) {
-      const popup = document.getElementById("popup");
-      popup.textContent = message;
-      popup.style.display = "block";
-      popup.style.backgroundColor = type === "success" ? "#4CAF50" : "#F44336";
-      
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 3000);
-    }
-
-    // Handle generate code button click
-    document.getElementById("generateCodeBtn").addEventListener("click", function() {
+    // Event Listener for Generate Code Button
+    document.getElementById("generateCode").addEventListener("click", () => {
       const randomCode = generateRandomCode();
       document.getElementById("generatedCode").textContent = randomCode;
-      document.getElementById("generatedCodeContainer").style.display = "block";
-
-      // Upload the generated code to Firestore
-      uploadCodeToFirestore(randomCode);
+      document.getElementById("customCode").value = randomCode;
     });
 
-    // Handle copy button click
-    document.getElementById("copyBtn").addEventListener("click", function() {
-      const codeText = document.getElementById("generatedCode").textContent;
-      navigator.clipboard.writeText(codeText).then(function() {
-        showPopup("Code copied to clipboard!", "success");
-      }).catch(function(error) {
-        showPopup("Failed to copy code.", "error");
-      });
+    // Event Listener for Form Submit
+    document.getElementById("codeForm").addEventListener("submit", function (e) {
+      e.preventDefault();  // Prevent form from refreshing the page
+      const customCode = document.getElementById("customCode").value.trim();
+
+      if (!customCode) {
+        alert("Please generate or enter a code before uploading!");
+        return;
+      }
+
+      uploadCodeToFirestore(customCode);
     });
   </script>
+</head>
+<body>
+  <h1>Generate and Upload Activation Code</h1>
+  
+  <form id="codeForm">
+    <label for="customCode">Enter Custom Code (Optional):</label>
+    <input type="text" id="customCode" placeholder="Enter your code">
+    <br><br>
+    <button type="button" id="generateCode">Generate Random Code</button>
+    <br><br>
+    <p><b>Generated Code:</b> <span id="generatedCode">None</span></p>
+    <button type="submit">Upload to Firestore</button>
+  </form>
+
+  <p id="successMessage" style="color:green; display:none;">Code successfully uploaded!</p>
+  <p id="errorMessage" style="color:red; display:none;">Error uploading code. Please try again.</p>
 </body>
 </html>
