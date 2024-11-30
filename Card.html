@@ -112,7 +112,7 @@
             // When both images are loaded, remove the loading screen
             Promise.all([
                 new Promise(function(resolve) {
-                    backgroundImage.onload = resolve;
+                    profileImage.onload = resolve;
                 })
             ]).then(function() {
                 // Remove loading screen and show content
