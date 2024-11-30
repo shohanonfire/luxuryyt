@@ -17,7 +17,6 @@
             align-items: center;
             min-height: 100vh;
             background-color: #000; /* Fallback background */
-            background-image: url('https://imgur.com/kIeroEh.png'); /* Background image */
             background-size: cover;
             background-position: center;
             color: #fff;
@@ -109,21 +108,32 @@
 
     <script>
         window.onload = function() {
-            // Get elements
-            const profileImage = document.getElementById('profile-pic');
+            // Elements
             const loadingScreen = document.getElementById('loading-screen');
+            const profileImage = new Image();
+            const backgroundImage = new Image();
 
-            // Ensure the profile image is fully loaded
-            profileImage.onload = function() {
+            // Background and profile image URLs
+            const backgroundUrl = 'https://imgur.com/kIeroEh.png';
+            const profileUrl = 'https://imgur.com/JOsEEmX.png';
+
+            // Set the body background
+            backgroundImage.src = backgroundUrl;
+
+            // Load profile image
+            profileImage.src = profileUrl;
+
+            // Wait for both images to load
+            Promise.all([
+                new Promise(resolve => backgroundImage.onload = resolve),
+                new Promise(resolve => profileImage.onload = resolve)
+            ]).then(() => {
+                // Apply background once loaded
+                document.body.style.backgroundImage = `url('${backgroundUrl}')`;
                 // Fade in the body and hide the loading screen
                 document.body.style.opacity = 1;
                 loadingScreen.style.display = 'none';
-            };
-
-            // Handle the case if the profile image is already cached and loaded
-            if (profileImage.complete) {
-                profileImage.onload();
-            }
+            });
         };
     </script>
 </body>
