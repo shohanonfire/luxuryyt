@@ -16,7 +16,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #000;
+            background-color: #000; /* Fallback background */
+            background-image: url('https://imgur.com/kIeroEh.png'); /* Background image */
+            background-size: cover;
+            background-position: center;
             color: #fff;
             opacity: 0; /* Initially hidden */
             transition: opacity 1s ease-in-out;
@@ -72,20 +75,25 @@
             color: #ccc;
         }
 
-        /* Full screen loading screen */
+        /* Full-screen loading screen */
         .loading {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: #000 url('https://imgur.com/kIeroEh.png') center center/cover no-repeat;
+            background: #000;
             z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="loading" id="loading-screen"></div> <!-- Full-screen loading -->
+    <div class="loading" id="loading-screen">Loading...</div> <!-- Loading screen -->
     <div class="container">
         <div class="profile-pic">
             <img src="https://imgur.com/JOsEEmX.png" alt="Profile Picture" id="profile-pic">
@@ -101,24 +109,21 @@
 
     <script>
         window.onload = function() {
-            
-            var
-                new profileImage = new Image();
-            
-            // Background image and profile pic sources
-    
-            profileImage.src = 'https://imgur.com/JOsEEmX.png';
+            // Get elements
+            const profileImage = document.getElementById('profile-pic');
+            const loadingScreen = document.getElementById('loading-screen');
 
-            // When both images are loaded, remove the loading screen
-            Promise.all([
-                new Promise(function(resolve) {
-                    profileImage.onload = resolve;
-                })
-            ]).then(function() {
-                // Remove loading screen and show content
+            // Ensure the profile image is fully loaded
+            profileImage.onload = function() {
+                // Fade in the body and hide the loading screen
                 document.body.style.opacity = 1;
-                document.getElementById('loading-screen').style.display = 'none';
-            });
+                loadingScreen.style.display = 'none';
+            };
+
+            // Handle the case if the profile image is already cached and loaded
+            if (profileImage.complete) {
+                profileImage.onload();
+            }
         };
     </script>
 </body>
