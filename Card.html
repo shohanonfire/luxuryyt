@@ -16,8 +16,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: url('https://imgur.com/kIeroEh.png') center center/cover no-repeat;
+            background: #000; /* Start with black background to hide content */
             color: #fff;
+            opacity: 0; /* Make body invisible initially */
+            transition: opacity 1s ease-in-out;
         }
         .container {
             border: 2px solid rgba(255, 255, 255, 0.5);
@@ -69,12 +71,23 @@
             font-size: 0.8em;
             color: #ccc;
         }
+
+        /* Loading screen styles */
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000 url('https://imgur.com/kIeroEh.png') center center/cover no-repeat;
+            z-index: 9999;
+        }
     </style>
 </head>
-<body>
+<body class="loading">
     <div class="container">
         <div class="profile-pic">
-            <img src="https://imgur.com/JOsEEmX.png" alt="Profile Picture">
+            <img src="https://imgur.com/JOsEEmX.png" alt="Profile Picture" id="profile-pic">
         </div>
         <div class="username">Aura Cyber Security</div>
         <a href="#" class="btn">Paytm My Quality Settings</a>
@@ -83,5 +96,27 @@
         <a href="https://youtube.com" class="btn">YouTube</a>
         <footer>©Copyright 2024</footer>
     </div>
+
+    <script>
+        // Wait for the profile image to load
+        const profilePic = document.getElementById('profile-pic');
+        const body = document.body;
+
+        function checkImagesLoaded() {
+            const backgroundImage = new Image();
+            backgroundImage.src = 'https://imgur.com/kIeroEh.png';
+            
+            // Check if both images have loaded
+            backgroundImage.onload = () => {
+                profilePic.onload = () => {
+                    // When both images are loaded, remove the loading class
+                    body.classList.remove('loading');
+                    body.style.opacity = 1; // Fade in the page
+                };
+            };
+        }
+
+        checkImagesLoaded();
+    </script>
 </body>
 </html>
