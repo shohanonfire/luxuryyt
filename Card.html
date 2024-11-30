@@ -16,9 +16,9 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: #000; /* Start with black background to hide content */
+            background-color: #000;
             color: #fff;
-            opacity: 0; /* Make body invisible initially */
+            opacity: 0; /* Initially hidden */
             transition: opacity 1s ease-in-out;
         }
         .container {
@@ -72,7 +72,7 @@
             color: #ccc;
         }
 
-        /* Loading screen styles */
+        /* Full screen loading screen */
         .loading {
             position: absolute;
             top: 0;
@@ -84,7 +84,8 @@
         }
     </style>
 </head>
-<body class="loading">
+<body>
+    <div class="loading" id="loading-screen"></div> <!-- Full-screen loading -->
     <div class="container">
         <div class="profile-pic">
             <img src="https://imgur.com/JOsEEmX.png" alt="Profile Picture" id="profile-pic">
@@ -98,25 +99,28 @@
     </div>
 
     <script>
-        // Wait for the profile image to load
-        const profilePic = document.getElementById('profile-pic');
-        const body = document.body;
-
-        function checkImagesLoaded() {
-            const backgroundImage = new Image();
-            backgroundImage.src = 'https://imgur.com/kIeroEh.png';
+        window.onload = function() {
+            var backgroundImage = new Image();
+            var profileImage = new Image();
             
-            // Check if both images have loaded
-            backgroundImage.onload = () => {
-                profilePic.onload = () => {
-                    // When both images are loaded, remove the loading class
-                    body.classList.remove('loading');
-                    body.style.opacity = 1; // Fade in the page
-                };
-            };
-        }
+            // Background image and profile pic sources
+            backgroundImage.src = 'https://imgur.com/kIeroEh.png';
+            profileImage.src = 'https://imgur.com/JOsEEmX.png';
 
-        checkImagesLoaded();
+            // When both images are loaded, remove the loading screen
+            Promise.all([
+                new Promise(function(resolve) {
+                    backgroundImage.onload = resolve;
+                }),
+                new Promise(function(resolve) {
+                    profileImage.onload = resolve;
+                })
+            ]).then(function() {
+                // Remove loading screen and show content
+                document.body.style.opacity = 1;
+                document.getElementById('loading-screen').style.display = 'none';
+            });
+        };
     </script>
 </body>
 </html>
