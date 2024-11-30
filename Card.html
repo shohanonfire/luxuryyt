@@ -101,20 +101,18 @@
 
     <script>
         window.onload = function() {
-            var backgroundImage = new Image();
-            var profileImage = new Image();
+            
+            var
+                new profileImage = new Image();
             
             // Background image and profile pic sources
-            backgroundImage.src = 'https://imgur.com/kIeroEh.png';
+    
             profileImage.src = 'https://imgur.com/JOsEEmX.png';
 
             // When both images are loaded, remove the loading screen
             Promise.all([
                 new Promise(function(resolve) {
                     backgroundImage.onload = resolve;
-                }),
-                new Promise(function(resolve) {
-                    profileImage.onload = resolve;
                 })
             ]).then(function() {
                 // Remove loading screen and show content
