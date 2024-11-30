@@ -16,9 +16,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #000; /* Fallback background */
-            background-size: cover;
-            background-position: center;
+            background-color: #000;
             color: #fff;
             opacity: 0; /* Initially hidden */
             transition: opacity 1s ease-in-out;
@@ -74,25 +72,20 @@
             color: #ccc;
         }
 
-        /* Full-screen loading screen */
+        /* Full screen loading screen */
         .loading {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: #000;
+            background: #000 url('https://imgur.com/kIeroEh.png') center center/cover no-repeat;
             z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em;
-            color: #fff;
         }
     </style>
 </head>
 <body>
-    <div class="loading" id="loading-screen">Loading...</div> <!-- Loading screen -->
+    <div class="loading" id="loading-screen"></div> <!-- Full-screen loading -->
     <div class="container">
         <div class="profile-pic">
             <img src="https://imgur.com/JOsEEmX.png" alt="Profile Picture" id="profile-pic">
@@ -108,31 +101,25 @@
 
     <script>
         window.onload = function() {
-            // Elements
-            const loadingScreen = document.getElementById('loading-screen');
-            const profileImage = new Image();
-            const backgroundImage = new Image();
+            var backgroundImage = new Image();
+            var profileImage = new Image();
+            
+            // Background image and profile pic sources
+            backgroundImage.src = 'https://imgur.com/kIeroEh.png';
+            profileImage.src = 'https://imgur.com/JOsEEmX.png';
 
-            // Background and profile image URLs
-            const backgroundUrl = 'https://imgur.com/kIeroEh.png';
-            const profileUrl = 'https://imgur.com/JOsEEmX.png';
-
-            // Set the body background
-            backgroundImage.src = backgroundUrl;
-
-            // Load profile image
-            profileImage.src = profileUrl;
-
-            // Wait for both images to load
+            // When both images are loaded, remove the loading screen
             Promise.all([
-                new Promise(resolve => backgroundImage.onload = resolve),
-                new Promise(resolve => profileImage.onload = resolve)
-            ]).then(() => {
-                // Apply background once loaded
-                document.body.style.backgroundImage = `url('${backgroundUrl}')`;
-                // Fade in the body and hide the loading screen
+                new Promise(function(resolve) {
+                    backgroundImage.onload = resolve;
+                }),
+                new Promise(function(resolve) {
+                    profileImage.onload = resolve;
+                })
+            ]).then(function() {
+                // Remove loading screen and show content
                 document.body.style.opacity = 1;
-                loadingScreen.style.display = 'none';
+                document.getElementById('loading-screen').style.display = 'none';
             });
         };
     </script>
